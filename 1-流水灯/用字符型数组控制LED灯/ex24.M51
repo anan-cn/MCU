@@ -1,0 +1,92 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        06/24/2009  15:46:17  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE ex24.obj TO ex24 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ex24.obj (EX24)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  ex24 (EX24)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0012H     UNIT         ?PR?MAIN?EX24
+            CODE    0015H     000DH     UNIT         ?PR?DELAY60MS?EX24
+            CODE    0022H     000CH     UNIT         ?C_C51STARTUP
+            CODE    002EH     0008H     UNIT         ?CO?EX24
+
+
+
+OVERLAY MAP OF MODULE:   ex24 (EX24)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?EX24
+
+?PR?MAIN?EX24
+  +--> ?CO?EX24
+  +--> ?PR?DELAY60MS?EX24
+
+
+
+SYMBOL TABLE OF MODULE:  ex24 (EX24)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EX24
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  C:0003H         PUBLIC        main
+  C:0015H         PUBLIC        delay60ms
+  -------         PROC          DELAY60MS
+  -------         DO            
+BL51 BANKED LINKER/LOCATER V6.00                                                      06/24/2009  15:46:17  PAGE 2
+
+
+  D:0007H         SYMBOL        m
+  D:0006H         SYMBOL        n
+  -------         ENDDO         
+  C:0015H         LINE#         6
+  C:0015H         LINE#         7
+  C:0015H         LINE#         9
+  C:0017H         LINE#         10
+  C:0021H         LINE#         12
+  -------         ENDPROC       DELAY60MS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0005H         SYMBOL        i
+  C:002EH         SYMBOL        Tab
+  -------         ENDDO         
+  C:0003H         LINE#         16
+  C:0003H         LINE#         17
+  C:0003H         LINE#         20
+  C:0003H         LINE#         21
+  C:0003H         LINE#         22
+  C:0005H         LINE#         23
+  C:0005H         LINE#         24
+  C:000CH         LINE#         25
+  C:000FH         LINE#         26
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX24
+
+Program Size: data=9.0 xdata=0 code=54
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

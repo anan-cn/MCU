@@ -1,0 +1,18 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+D:\光盘\RZ-51V20\RZ-51V20 实例程序\11-12864不带字库\12864\hanziLCD.uv2
+Project File Date:  12/16/2009
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling HANZI.c...
+HANZI.c(242): warning C316: unterminated conditionals
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_LCD_Z?HANZI
+Program Size: data=25.0 xdata=0 code=763
+creating hex file from "hanziLCD"...
+"hanziLCD" - 0 Error(s), 2 Warning(s).

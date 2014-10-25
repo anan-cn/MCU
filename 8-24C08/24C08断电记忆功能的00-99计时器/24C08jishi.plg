@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+D:\RZ-51\实验板配套实例程序\24C08\24C08断电记忆功能的00-99计时器\24C08jishi.uv2
+Project File Date:  07/22/2009
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 24C08jishi.C...
+linking...
+Program Size: data=13.1 xdata=0 code=509
+creating hex file from "24C08jishi"...
+"24C08jishi" - 0 Error(s), 0 Warning(s).

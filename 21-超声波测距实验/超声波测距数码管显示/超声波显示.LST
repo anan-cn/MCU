@@ -1,0 +1,171 @@
+C51 COMPILER V8.18   超蒧波显示                                                            01/07/2010 23:33:44 PAGE 1   
+
+
+C51 COMPILER V8.18, COMPILATION OF MODULE 超蒧波显示
+OBJECT MODULE PLACED IN 超声波显示.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 超声波显示.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //超声波模块显示程序
+   2          #include <reg52.h>     //包括一个52标准内核的头文件
+   3          #define uchar unsigned char //定义一下方便使用
+   4          #define uint  unsigned int
+   5          #define ulong unsigned long
+   6          sbit Tx  = P3^3; //产生脉冲引脚
+   7          sbit Rx  = P3^2; //回波引脚
+   8          uchar code SEG7[10]={0xC0,0xF9,0xA4,0xB0,0x99,0x92,0x82,0xF8,0x80,0x90};//数码管0-9
+   9          uint distance[4];  //测距接收缓冲区
+  10          uchar ge,shi,bai,temp,flag,outcomeH,outcomeL,i;  //自定义寄存器
+  11          bit succeed_flag;  //测量成功标志
+  12          //********函数声明
+  13          void conversion(uint temp_data);
+  14          void delay_20us();
+  15           void pai_xu();
+  16          void main(void)   // 主程序
+  17          {  uint distance_data,a,b;
+  18   1         uchar CONT_1;   
+  19   1         i=0;
+  20   1         flag=0;
+  21   1              Tx=0;       //首先拉低脉冲输入引脚
+  22   1              TMOD=0x11;    //定时器0，定时器1，16位工作方式
+  23   1              TR0=1;       //启动定时器0
+  24   1         IT0=0;        //由高电平变低电平，触发外部中断
+  25   1              ET0=1;        //打开定时器0中断
+  26   1              EX0=0;        //关闭外部中断
+  27   1              EA=1;         //打开总中断0     
+  28   1        
+  29   1              
+  30   1      while(1)         //程序循环
+  31   1              {
+  32   2        EA=0;
+  33   2                   Tx=1;
+  34   2              delay_20us();
+  35   2              Tx=0;         //产生一个20us的脉冲，在Tx引脚  
+  36   2              while(Rx==0); //等待Rx回波引脚变高电平
+  37   2                   succeed_flag=0; //清测量成功标志
+  38   2                   EX0=1;          //打开外部中断
+  39   2                        TH1=0;          //定时器1清零
+  40   2              TL1=0;          //定时器1清零
+  41   2                   TF1=0;          //
+  42   2              TR1=1;          //启动定时器1
+  43   2         EA=1;
+  44   2      
+  45   2            while(TH1 < 30);//等待测量的结果，周期65.535毫秒（可用中断实现）  
+  46   2                        TR1=0;          //关闭定时器1
+  47   2              EX0=0;          //关闭外部中断
+  48   2      
+  49   2          if(succeed_flag==1)
+  50   2                   {  
+  51   3                         distance_data=outcomeH;                //测量结果的高8位
+  52   3                 distance_data<<=8;                   //放入16位的高8位
+  53   3                           distance_data=distance_data|outcomeL;//与低8位合并成为16位结果数据
+  54   3                  distance_data*=12;                  //因为定时器默认为12分频
+  55   3                 distance_data/=58;                   //微秒的单位除以58等于厘米
+C51 COMPILER V8.18   超蒧波显示                                                            01/07/2010 23:33:44 PAGE 2   
+
+  56   3               }                                      //为什么除以58等于厘米，  Y米=（X秒*344）/2
+  57   2                                                                     // X秒=（ 2*Y米）/344 ==》X秒=0.0058*Y米 ==》厘米=微秒/58 
+  58   2          if(succeed_flag==0)
+  59   2                         {
+  60   3                  distance_data=0;                    //没有回波则清零
+  61   3      
+  62   3                 }
+  63   2      
+  64   2                 distance[i]=distance_data; //将测量结果的数据放入缓冲区
+  65   2                  i++;
+  66   2                       if(i==3)
+  67   2                           {
+  68   3                             distance_data=(distance[0]+distance[1]+distance[2]+distance[3])/4;
+  69   3                     pai_xu();
+  70   3                   distance_data=distance[1];
+  71   3      
+  72   3            
+  73   3                 a=distance_data;
+  74   3             if(b==a) CONT_1=0;
+  75   3             if(b!=a) CONT_1++;
+  76   3             if(CONT_1>=3)
+  77   3                         { CONT_1=0;
+  78   4                                b=a;
+  79   4                                conversion(b);
+  80   4                              }       
+  81   3                               i=0;
+  82   3                              }            
+  83   2               }
+  84   1      }
+  85          //***************************************************************
+  86          //外部中断0，用做判断回波电平
+  87          INTO_()  interrupt 0   // 外部中断是0号
+  88           {    
+  89   1           outcomeH =TH1;    //取出定时器的值
+  90   1           outcomeL =TL1;    //取出定时器的值
+  91   1           succeed_flag=1;   //至成功测量的标志
+  92   1           EX0=0;            //关闭外部中断
+  93   1        }
+  94          //****************************************************************
+  95          //定时器0中断,用做显示
+  96          timer0() interrupt 1  // 定时器0中断是1号
+  97             {
+  98   1               TH0=0xfd; //写入定时器0初始值
+  99   1               TL0=0x77;              
+ 100   1               switch(flag)   
+ 101   1            {case 0x00:P0=ge; P2=0x7f;flag++;break;
+ 102   2                  case 0x01:P0=shi;P2=0xbf;flag++;break;
+ 103   2                  case 0x02:P0=bai;P2=0xdf;flag=0;break;
+ 104   2            }
+ 105   1         }
+ 106          
+ 107          //显示数据转换程序
+ 108          void conversion(uint temp_data)  
+ 109           {  
+ 110   1          uchar ge_data,shi_data,bai_data ;
+ 111   1          bai_data=temp_data/100 ;
+ 112   1          temp_data=temp_data%100;   //取余运算
+ 113   1          shi_data=temp_data/10 ;
+ 114   1          temp_data=temp_data%10;   //取余运算
+ 115   1          ge_data=temp_data;
+ 116   1      
+ 117   1          bai_data=SEG7[bai_data];
+C51 COMPILER V8.18   超蒧波显示                                                            01/07/2010 23:33:44 PAGE 3   
+
+ 118   1          shi_data=SEG7[shi_data]&0x7f;
+ 119   1          ge_data =SEG7[ge_data];
+ 120   1      
+ 121   1          EA=0;
+ 122   1          bai = bai_data;
+ 123   1          shi = shi_data;
+ 124   1          ge  = ge_data ; 
+ 125   1               EA=1;
+ 126   1       }
+ 127          //******************************************************************
+ 128          
+ 129          
+ 130          void delay_20us()
+ 131           {  uchar bt ;
+ 132   1          for(bt=0;bt<60;bt++);
+ 133   1       }
+ 134            void pai_xu()
+ 135            {  uint t;
+ 136   1        if (distance[0]>distance[1])
+ 137   1          {t=distance[0];distance[0]=distance[1];distance[1]=t;} 
+ 138   1        if(distance[0]>distance[2])
+ 139   1          {t=distance[2];distance[2]=distance[0];distance[0]=t;} 
+ 140   1        if(distance[1]>distance[2])
+ 141   1          {t=distance[1];distance[1]=distance[2];distance[2]=t;}  
+ 142   1          }
+ 143          
+ 144          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    460    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

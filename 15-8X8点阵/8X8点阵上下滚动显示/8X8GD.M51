@@ -1,0 +1,166 @@
+BL51 BANKED LINKER/LOCATER V6.20                                                        01/04/2010  16:30:17  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.20, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 8X8GD.obj TO 8X8GD RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  8X8GD.obj (8X8GD)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  8X8GD (8X8GD)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0004H     UNIT         ?DT?8X8GD
+            IDATA   000CH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0005H     UNIT         ?PR?PAR_OUT?8X8GD
+                    0008H     0003H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0140H     UNIT         ?CO?8X8GD
+            CODE    014EH     0054H     UNIT         ?PR?DISPLAY?8X8GD
+            CODE    01A2H     001DH     UNIT         ?PR?T0_INTSERVICE?8X8GD
+            CODE    01BFH     0013H     UNIT         ?PR?_SER_IN?8X8GD
+            CODE    01D2H     000FH     UNIT         ?PR?T0_INIT?8X8GD
+            CODE    01E1H     000CH     UNIT         ?C_C51STARTUP
+            CODE    01EDH     0005H     UNIT         ?PR?MAIN?8X8GD
+
+
+
+OVERLAY MAP OF MODULE:   8X8GD (8X8GD)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?PR?T0_INTSERVICE?8X8GD
+  +--> ?PR?DISPLAY?8X8GD
+
+?PR?DISPLAY?8X8GD
+  +--> ?CO?8X8GD
+  +--> ?PR?_SER_IN?8X8GD
+  +--> ?PR?PAR_OUT?8X8GD
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP
+  +--> ?PR?MAIN?8X8GD
+
+?PR?MAIN?8X8GD
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:30:17  PAGE 2
+
+
+  +--> ?PR?T0_INIT?8X8GD
+
+
+
+SYMBOL TABLE OF MODULE:  8X8GD (8X8GD)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        8X8GD
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:0090H.6       PUBLIC        SH_CK
+  C:001EH         PUBLIC        table
+  D:00A8H         PUBLIC        IE
+  B:0090H.5       PUBLIC        ST_CK
+  B:0090H.4       PUBLIC        SD
+  D:00B8H         PUBLIC        IP
+  C:01D2H         PUBLIC        T0_init
+  C:01BFH         PUBLIC        _Ser_IN
+  C:01EDH         PUBLIC        main
+  C:01A2H         PUBLIC        T0_intservice
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:000EH         PUBLIC        aa
+  C:0016H         PUBLIC        bb
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:014EH         PUBLIC        Display
+  D:00C8H         PUBLIC        T2CON
+  D:0008H         PUBLIC        i
+  D:0009H         PUBLIC        m
+  D:000AH         PUBLIC        n
+  D:00D0H         PUBLIC        PSW
+  C:0003H         PUBLIC        Par_OUT
+  -------         PROC          _SER_IN
+  D:0007H         SYMBOL        Data
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:01BFH         LINE#         39
+  C:01BFH         LINE#         40
+  C:01BFH         LINE#         42
+  C:01C1H         LINE#         43
+  C:01C1H         LINE#         44
+  C:01C3H         LINE#         45
+  C:01C7H         LINE#         46
+  C:01CBH         LINE#         47
+  C:01CDH         LINE#         48
+  C:01D1H         LINE#         49
+  -------         ENDPROC       _SER_IN
+  -------         PROC          PAR_OUT
+  C:0003H         LINE#         55
+  C:0003H         LINE#         56
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:30:17  PAGE 3
+
+
+  C:0003H         LINE#         57
+  C:0005H         LINE#         58
+  C:0007H         LINE#         59
+  -------         ENDPROC       PAR_OUT
+  -------         PROC          DISPLAY
+  C:014EH         LINE#         69
+  C:014EH         LINE#         71
+  C:014EH         LINE#         72
+  C:0169H         LINE#         73
+  C:0173H         LINE#         74
+  C:0176H         LINE#         75
+  C:0180H         LINE#         76
+  C:0192H         LINE#         77
+  C:01A1H         LINE#         78
+  -------         ENDPROC       DISPLAY
+  -------         PROC          T0_INIT
+  C:01D2H         LINE#         83
+  C:01D2H         LINE#         84
+  C:01D2H         LINE#         85
+  C:01D5H         LINE#         86
+  C:01D8H         LINE#         87
+  C:01DBH         LINE#         88
+  C:01DEH         LINE#         89
+  C:01E0H         LINE#         90
+  -------         ENDPROC       T0_INIT
+  -------         PROC          T0_INTSERVICE
+  C:01A2H         LINE#         95
+  C:01ADH         LINE#         97
+  C:01B0H         LINE#         98
+  C:01B3H         LINE#         99
+  C:01B6H         LINE#         100
+  -------         ENDPROC       T0_INTSERVICE
+  -------         PROC          MAIN
+  C:01EDH         LINE#         105
+  C:01EDH         LINE#         106
+  C:01EDH         LINE#         107
+  C:01F0H         LINE#         108
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        8X8GD
+
+Program Size: data=13.0 xdata=0 code=495
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

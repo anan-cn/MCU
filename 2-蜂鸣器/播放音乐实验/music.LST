@@ -1,0 +1,149 @@
+C51 COMPILER V8.02   MUSIC                                                                 07/22/2009 21:48:14 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MUSIC
+OBJECT MODULE PLACED IN music.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE music.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <AT89X51.H> 
+   2          
+   3          unsigned char t5hz; 
+   4          
+   5          unsigned char t7hz; 
+   6          
+   7          unsigned int tcnt; 
+   8          
+   9          bit stop; 
+  10          
+  11          bit flag; 
+  12          
+  13          void main(void) 
+  14          
+  15          { 
+  16   1      
+  17   1        //unsigned char i,j; 
+  18   1      
+  19   1        TMOD=0x02; 
+  20   1      
+  21   1        TH0=0x06; 
+  22   1      
+  23   1        TL0=0x06; 
+  24   1      
+  25   1        ET0=1; 
+  26   1      
+  27   1        EA=1; 
+  28   1      
+  29   1        while(1) 
+  30   1      
+  31   1          { 
+  32   2      
+  33   2           
+  34   2                    t5hz=0; 
+  35   2      
+  36   2                    t7hz=0; 
+  37   2      
+  38   2                    tcnt=0; 
+  39   2      
+  40   2                    flag=0; 
+  41   2      
+  42   2                    stop=0; 
+  43   2      
+  44   2                    TR0=1; 
+  45   2      
+  46   2                    while(stop==0); 
+  47   2      
+  48   2               
+  49   2      
+  50   2          } 
+  51   1      
+  52   1      } 
+  53          
+  54          void t0(void) interrupt 1 using 0 
+  55          
+C51 COMPILER V8.02   MUSIC                                                                 07/22/2009 21:48:14 PAGE 2   
+
+  56          { 
+  57   1      
+  58   1        tcnt++; 
+  59   1      
+  60   1        if(tcnt==2000) 
+  61   1      
+  62   1          { 
+  63   2      
+  64   2            tcnt=0; 
+  65   2      
+  66   2            if(flag==0) 
+  67   2      
+  68   2              { 
+  69   3      
+  70   3                flag=~flag; 
+  71   3      
+  72   3              } 
+  73   2      
+  74   2              else 
+  75   2      
+  76   2                { 
+  77   3      
+  78   3                  stop=1; 
+  79   3      
+  80   3                  TR0=0; 
+  81   3      
+  82   3                } 
+  83   2      
+  84   2          } 
+  85   1      
+  86   1        if(flag==0) 
+  87   1      
+  88   1          { 
+  89   2      
+  90   2            t7hz++; 
+  91   2      
+  92   2            if(t7hz==3) 
+  93   2      
+  94   2              { 
+  95   3      
+  96   3                t7hz=0; 
+  97   3      
+  98   3                P3_6=~P3_6; 
+  99   3      
+ 100   3              } 
+ 101   2      
+ 102   2          } 
+ 103   1      
+ 104   1          else 
+ 105   1      
+ 106   1            { 
+ 107   2      
+ 108   2              t5hz++; 
+ 109   2      
+ 110   2              if(t5hz==4) 
+ 111   2      
+ 112   2                { 
+ 113   3      
+ 114   3                  t5hz=0; 
+ 115   3      
+ 116   3                  P2_1=~P2_1; 
+ 117   3      
+C51 COMPILER V8.02   MUSIC                                                                 07/22/2009 21:48:14 PAGE 3   
+
+ 118   3                } 
+ 119   2      
+ 120   2            } 
+ 121   1      
+ 122   1      } 
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    104    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

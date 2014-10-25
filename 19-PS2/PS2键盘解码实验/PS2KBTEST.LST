@@ -1,0 +1,264 @@
+C51 COMPILER V8.18   PS2KBTEST                                                             01/04/2010 16:32:17 PAGE 1   
+
+
+C51 COMPILER V8.18, COMPILATION OF MODULE PS2KBTEST
+OBJECT MODULE PLACED IN PS2KBTEST.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE PS2KBTEST.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <at89x51.h>
+   2          #include "KBCODE.H"
+   3          #define LCM_RS    P2_0
+   4          #define LCM_RW    P2_1 //定义LCD引脚
+   5          #define LCM_E     P2_2
+   6          #define LCM_Data  P0
+   7          #define Busy 0x80 //用于检测LCM状态字中的Busy标识
+   8          #define Key_Data  P3_2 //定义Keyboard引脚
+   9          #define Key_CLK   P3_3
+  10          void LCMInit(void);
+  11          void DisplayOneChar(unsigned char X,unsigned char Y,unsigned char DData);
+  12          void DisplayListChar(unsigned char X,unsigned char Y,unsigned char code *DData);
+  13          void Delay5Ms(void);
+  14          void Delay400Ms(void);
+  15          void Decode(unsigned char ScanCode);
+  16          void WriteDataLCM(unsigned char WDLCM);
+  17          void WriteCommandLCM(unsigned char WCLCM,BuysC);
+  18          unsigned char ReadStatusLCM(void);
+  19          unsigned char code cdle_net[] = {"RICHMCU PS2 TEST"};
+  20          unsigned char code email[] = {"WWW.RICHMCU.COM"};
+  21          unsigned char code Cls[] =   {"                "};
+  22          static unsigned char IntNum = 0; //中断次数计数
+  23          static unsigned char KeyV; //键值
+  24          static unsigned char DisNum = 0; //显示用指针
+  25          static unsigned char Key_UP=0, Shift = 0;//Key_UP是键松开标识，Shift是Shift键按下标识
+  26          static unsigned char BF = 0; //标识是否有字符被收到
+  27          
+  28          void main(void)
+  29          {
+  30   1              unsigned char TempCyc;
+  31   1      
+  32   1              Delay400Ms(); //启动等待，等LCM讲入工作状态
+  33   1              LCMInit(); //LCM初始化 
+  34   1      
+  35   1      
+  36   1              DisplayListChar(0, 0, cdle_net);
+  37   1              DisplayListChar(0, 1, email);
+  38   1              for(TempCyc=0; TempCyc<10; TempCyc++) {
+  39   2                      Delay400Ms(); //延时
+  40   2              }
+  41   1              DisplayListChar(0, 1, Cls);
+  42   1      
+  43   1              IT1 = 0; //设外部中断1为低电平触发
+  44   1              EX1 = 1; //开中断
+  45   1              EA = 1;
+  46   1      
+  47   1              while(1) {
+  48   2                      if(BF)
+  49   2                              Decode(KeyV);
+  50   2                      else {
+  51   3                              EA = 1; //开中断
+  52   3                      }
+  53   2              }
+  54   1      }
+  55          
+C51 COMPILER V8.18   PS2KBTEST                                                             01/04/2010 16:32:17 PAGE 2   
+
+  56          //写数据
+  57          void WriteDataLCM(unsigned char WDLCM) 
+  58          {
+  59   1              ReadStatusLCM(); //检测忙
+  60   1              LCM_Data = WDLCM;
+  61   1              LCM_RS = 1;
+  62   1              LCM_RW = 0;
+  63   1              LCM_E = 0; //若晶振速度太高可以在这后加小的延时
+  64   1              LCM_E = 0; //延时               
+  65   1              LCM_E = 1;
+  66   1      }
+  67          
+  68          //写指令
+  69          void WriteCommandLCM(unsigned char WCLCM,BuysC) //BuysC为0时忽略忙检测
+  70          {
+  71   1              if(BuysC) ReadStatusLCM(); //根据需要检测忙
+  72   1              LCM_Data = WCLCM;
+  73   1              LCM_RS = 0;
+  74   1              LCM_RW = 0;
+  75   1              LCM_E = 0;
+  76   1              LCM_E = 0;
+  77   1              
+  78   1              LCM_E = 1; 
+  79   1      }
+  80          
+  81          
+  82          //读状态
+  83          unsigned char ReadStatusLCM(void)
+  84          {
+  85   1              LCM_Data = 0xFF; 
+  86   1              LCM_RS = 0;
+  87   1              LCM_RW = 1;
+  88   1              LCM_E = 0;
+  89   1              LCM_E = 1;
+  90   1              while(LCM_Data & Busy); //检测忙信号
+  91   1      
+  92   1              return(LCM_Data);
+  93   1      }
+  94          
+  95          void LCMInit(void) //LCM初始化
+  96          {
+  97   1              LCM_Data = 0;
+  98   1              WriteCommandLCM(0x38,0); //三次显示模式设置，不检测忙信号
+  99   1              Delay5Ms(); 
+ 100   1                      Delay5Ms(); 
+ 101   1              WriteCommandLCM(0x38,0);
+ 102   1              Delay5Ms(); 
+ 103   1                      Delay5Ms(); 
+ 104   1              WriteCommandLCM(0x38,0);
+ 105   1              Delay5Ms();
+ 106   1                      Delay5Ms();  
+ 107   1      
+ 108   1              WriteCommandLCM(0x38,1); //显示模式设置,开始要求每次检测忙信号
+ 109   1              WriteCommandLCM(0x08,1); //关闭显示
+ 110   1              WriteCommandLCM(0x01,1); //显示清屏 
+ 111   1              WriteCommandLCM(0x06,1); // 显示光标移动设置
+ 112   1              WriteCommandLCM(0x0F,1); // 显示开及光标设置
+ 113   1      }
+ 114          
+ 115          //按指定位置显示一个字符
+ 116          void DisplayOneChar(unsigned char X, unsigned char Y, unsigned char DData)
+ 117          {
+C51 COMPILER V8.18   PS2KBTEST                                                             01/04/2010 16:32:17 PAGE 3   
+
+ 118   1              Y &= 0x1;
+ 119   1              X &= 0xF; //限制X不能大于15，Y不能大于1
+ 120   1              if(Y)
+ 121   1                      X |= 0x40; //当要显示第二行时地址码+0x40;
+ 122   1              X |= 0x80; //算出指令码
+ 123   1              WriteCommandLCM(X, 1); //发命令字
+ 124   1              WriteDataLCM(DData); //发数据
+ 125   1      }
+ 126          
+ 127          //按指定位置显示一串字符
+ 128          void DisplayListChar(unsigned char X, unsigned char Y, unsigned char code *DData)
+ 129          {
+ 130   1              unsigned char ListLength;
+ 131   1      
+ 132   1              ListLength = 0;
+ 133   1              Y &= 0x1;
+ 134   1              X &= 0xF; //限制X不能大于15，Y不能大于1
+ 135   1              while (DData[ListLength]>0x19) {//若到达字串尾则退出
+ 136   2                      if(X <= 0xF) {//X坐标应小于0xF
+ 137   3                              DisplayOneChar(X, Y, DData[ListLength]); //显示单个字符
+ 138   3                              ListLength++;
+ 139   3                              X++;
+ 140   3                      }
+ 141   2              }
+ 142   1      }
+ 143          
+ 144          //5ms延时
+ 145          void Delay5Ms(void)
+ 146          {
+ 147   1              unsigned int TempCyc = 5552;
+ 148   1              while(TempCyc--)
+ 149   1                      ;
+ 150   1      }
+ 151          
+ 152          //400ms延时
+ 153          void Delay400Ms(void)
+ 154          {
+ 155   1              unsigned char TempCycA = 5;
+ 156   1              unsigned int TempCycB;
+ 157   1              while(TempCycA--) {
+ 158   2                      TempCycB=7269;
+ 159   2                      while(TempCycB--)
+ 160   2                              ;
+ 161   2              }
+ 162   1      }
+ 163          
+ 164          void Keyboard_out(void) interrupt 2
+ 165          {
+ 166   1              if((IntNum > 0) && (IntNum < 9)) {
+ 167   2                      KeyV >>= 1;                     //因键盘数据是低>>高，结合上一句所以右移一位
+ 168   2                      if(Key_Data) {
+ 169   3                              KeyV |= 0x80;   //当键盘数据线为1时为1到最高位
+ 170   3                      }
+ 171   2              }
+ 172   1              IntNum++;
+ 173   1              while(!Key_CLK);                //等待PS/2CLK拉高
+ 174   1              if(IntNum > 10) {
+ 175   2                      IntNum = 0;                     //当中断10次后表示一帧数据收完，清变量准备下一次接收
+ 176   2                      BF = 1;                         //标识有字符输入完了
+ 177   2                      EA = 0;                         //关中断等显示完后再开中断 
+ 178   2              }
+ 179   1      }
+C51 COMPILER V8.18   PS2KBTEST                                                             01/04/2010 16:32:17 PAGE 4   
+
+ 180          void Decode(unsigned char ScanCode) //注意:如SHIFT+G为12H 34H F0H 34H F0H 12H，也就是说shift的通码+G的通码
+             -+shift的断码+G的断码
+ 181          {
+ 182   1              unsigned char TempCyc;
+ 183   1      
+ 184   1              if(!Key_UP) {                   //当键盘松开时
+ 185   2                      switch(ScanCode) {
+ 186   3                              case 0xF0 :             //当收到0xF0，Key_UP置1表示断码开始
+ 187   3                                      Key_UP = 1;
+ 188   3                                      break;
+ 189   3                              case 0x12:              // 左 SHIFT
+ 190   3                                      Shift = 1;
+ 191   3                                      break;
+ 192   3                              case 0x59:              // 右 SHIFT
+ 193   3                                      Shift = 1;
+ 194   3                                      break;
+ 195   3                              default:
+ 196   3                                      if(DisNum > 15) {
+ 197   4                                              DisplayListChar(0,1,Cls);       //清LCD第二行
+ 198   4                                              DisNum = 0;
+ 199   4                                      }
+ 200   3                                      if(Shift == 1) {                                //如果按下SHIFT
+ 201   4                                              for(TempCyc = 0;(Shifted[TempCyc][0]!=ScanCode)&&(TempCyc<59); TempCyc++); //查表显示
+ 202   4                                              if(Shifted[TempCyc][0] == ScanCode) {
+ 203   5                                                      DisplayOneChar(DisNum,1,Shifted[TempCyc][1]);
+ 204   5                                              }
+ 205   4                                              DisNum++;
+ 206   4                                      } 
+ 207   3                                      else {                                                  //没有按下SHIFT
+ 208   4                                              for(TempCyc = 0; (UnShifted[TempCyc][0]!=ScanCode)&&(TempCyc<59);TempCyc++); //查表显示
+ 209   4                                              if(UnShifted[TempCyc][0] == ScanCode) {
+ 210   5                                                      DisplayOneChar(DisNum,1,UnShifted[TempCyc][1]);
+ 211   5                                              }
+ 212   4                                              DisNum++;
+ 213   4                                      }
+ 214   3                                      break;
+ 215   3                      }
+ 216   2              }
+ 217   1              else {
+ 218   2                      Key_UP = 0;
+ 219   2                      switch(ScanCode) {      //当键松开时不处理判码，如G 34H F0H 34H 那么第二个34H不会被处理
+ 220   3                              case 0x12:              // 左 SHIFT
+ 221   3                                      Shift = 0;
+ 222   3                                      break;
+ 223   3                              case 0x59:              // 右 SHIFT
+ 224   3                                      Shift = 0;
+ 225   3                                      break;
+ 226   3                              default:
+ 227   3                                      break;
+ 228   3                      }
+ 229   2              }
+ 230   1              BF = 0;                                 //标识字符处理完了
+ 231   1      } 
+ 232          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    590    ----
+   CONSTANT SIZE    =    294    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6      11
+C51 COMPILER V8.18   PS2KBTEST                                                             01/04/2010 16:32:17 PAGE 5   
+
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

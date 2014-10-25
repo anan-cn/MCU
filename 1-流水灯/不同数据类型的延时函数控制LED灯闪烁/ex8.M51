@@ -1,0 +1,117 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        05/16/2009  21:27:03  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE ex8.obj TO ex8 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ex8.obj (EX8)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?SLCMP)
+
+
+LINK MAP OF MODULE:  ex8 (EX8)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0032H     UNIT         ?PR?MAIN?EX8
+            CODE    0035H     001AH     UNIT         ?PR?INT_DELAY?EX8
+            CODE    004FH     0016H     UNIT         ?C?LIB_CODE
+            CODE    0065H     000DH     UNIT         ?PR?CHAR_DELAY?EX8
+            CODE    0072H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ex8 (EX8)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?EX8
+
+?PR?MAIN?EX8                   0008H    0001H
+  +--> ?PR?INT_DELAY?EX8
+  +--> ?PR?CHAR_DELAY?EX8
+
+
+
+SYMBOL TABLE OF MODULE:  ex8 (EX8)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EX8
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  C:0065H         PUBLIC        char_delay
+BL51 BANKED LINKER/LOCATER V6.00                                                      05/16/2009  21:27:03  PAGE 2
+
+
+  C:0003H         PUBLIC        main
+  C:0035H         PUBLIC        int_delay
+  -------         PROC          INT_DELAY
+  -------         DO            
+  D:0082H         SYMBOL        m
+  -------         ENDDO         
+  C:0035H         LINE#         6
+  C:0035H         LINE#         7
+  C:0035H         LINE#         9
+  C:004EH         LINE#         11
+  -------         ENDPROC       INT_DELAY
+  -------         PROC          CHAR_DELAY
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  -------         ENDDO         
+  C:0065H         LINE#         15
+  C:0065H         LINE#         16
+  C:0065H         LINE#         18
+  C:0067H         LINE#         19
+  C:0071H         LINE#         21
+  -------         ENDPROC       CHAR_DELAY
+  -------         PROC          MAIN
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         25
+  C:0003H         LINE#         26
+  C:0003H         LINE#         28
+  C:0003H         LINE#         29
+  C:0003H         LINE#         30
+  C:0006H         LINE#         31
+  C:0006H         LINE#         32
+  C:0009H         LINE#         33
+  C:000CH         LINE#         34
+  C:000FH         LINE#         35
+  C:0012H         LINE#         36
+  C:001BH         LINE#         37
+  C:0025H         LINE#         38
+  C:0025H         LINE#         39
+  C:0028H         LINE#         40
+  C:002BH         LINE#         41
+  C:002EH         LINE#         42
+  C:0031H         LINE#         43
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX8
+
+  -------         MODULE        ?C?SLCMP
+  C:004FH         PUBLIC        ?C?SLCMP
+  -------         ENDMOD        ?C?SLCMP
+
+Program Size: data=10.0 xdata=0 code=126
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

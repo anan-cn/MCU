@@ -1,0 +1,40 @@
+C51 COMPILER V8.02   EX19                                                                  06/24/2009 13:53:29 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE EX19
+OBJECT MODULE PLACED IN ex19.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ex19.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //实例19：用if语句控制P0口8位LED的流水方向
+   2          #include<reg51.h>  //包含单片机寄存器的头文件
+   3          sbit K5=P1^4;     //将S1位定义为P1.4
+   4          sbit K6=P1^5;     //将S2位定义为P1.5
+   5          /*****************************
+   6          函数功能：主函数
+   7          *****************************/
+   8          void main(void)
+   9          {  
+  10   1         while(1)
+  11   1               {
+  12   2                if(K5==0)   //如果按键S1按下
+  13   2                  P0=0x0f;  //P0口高四位LED点亮
+  14   2                if(K6==0)   //如果按键S2按下
+  15   2                  P0=0xf0;  //P0口低四位LED点亮
+  16   2                }      
+  17   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     14    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

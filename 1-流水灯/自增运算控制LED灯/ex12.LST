@@ -1,0 +1,46 @@
+C51 COMPILER V8.02   EX12                                                                  06/24/2009 13:47:55 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE EX12
+OBJECT MODULE PLACED IN ex12.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ex12.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //实例12：用自增运算控制P0口8位LED流水花样
+   2          #include<reg51.h>   //包含单片机寄存器的头文件
+   3          /******************************************************
+   4          函数功能：延时一段时间
+   5          ******************************************************/
+   6          void delay(void) 
+   7          {
+   8   1         unsigned int i;   
+   9   1              for(i=0;i<20000;i++)
+  10   1                  ;
+  11   1      }
+  12          /******************************************************
+  13          函数功能：主函数
+  14          ******************************************************/
+  15          void main(void)  
+  16          {
+  17   1        unsigned char i;
+  18   1        for(i=0;i<255;i++)  //注意i的值不能超过255
+  19   1         {
+  20   2                P0=i;    //将i的值送P0口
+  21   2                delay(); //调用延时函数
+  22   2              }
+  23   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     27    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

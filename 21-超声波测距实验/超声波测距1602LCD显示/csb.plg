@@ -1,0 +1,27 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+D:\¹âÅÌ\RZ-51V20 ÅäÌ×Èí¼ş¼°×ÊÁÏ\RZ-51V20 ÊµÀı³ÌĞò\³¬Éù²¨²â¾à1602LCDÏÔÊ¾\csb.uv2
+Project File Date:  01/07/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling ³¬Éù²¨ÏÔÊ¾.C...
+³¬Éù²¨ÏÔÊ¾.C(227): warning C206: 'pai_xu': missing function-prototype
+³¬Éù²¨ÏÔÊ¾.C(289): error C231: 'pai_xu': redefinition
+³¬Éù²¨ÏÔÊ¾.C(296): error C231: 'pai_xu': redefinition
+Target not created
+Build target 'Target 1'
+compiling ³¬Éù²¨ÏÔÊ¾.C...
+linking...
+Program Size: data=32.2 xdata=0 code=815
+creating hex file from "csb"...
+"csb" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ³¬Éù²¨ÏÔÊ¾.C...
+linking...
+Program Size: data=32.2 xdata=0 code=815
+creating hex file from "csb"...
+"csb" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+F:\新版程序\流水灯\数组控制流水灯-2\deng.uv2
+Project File Date:  07/04/2008
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling ggdeng.c...
+linking...
+Program Size: data=10.0 xdata=0 code=90
+creating hex file from "deng"...
+"deng" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,181 @@
+C51 COMPILER V8.02   BMKG                                                                  12/31/2009 09:50:56 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE BMKG
+OBJECT MODULE PLACED IN BMKG.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE BMKG.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg52.h>
+   2          sbit     BMA    = P1^4;//编码开关A引脚
+   3          sbit     BMB    = P1^5;//编码开关B引脚
+   4          sbit     BMC    = P1^6;//编码开关 下按引脚
+   5          
+   6          unsigned char  display[3];
+   7          unsigned char  code  LEDData[ ] = { 
+   8             0xC0,0xF9,0xA4,0xB0,0x99,0x92,
+   9             0x82,0xF8,0x80,0x90,0xff
+  10          }; 
+  11          unsigned char  counter = 0;     //编码器脉冲计数 
+  12          unsigned char  n,shift;
+  13          
+  14          /**********************************************************
+  15          
+  16          ms延时子函数
+  17          
+  18          **********************************************************/
+  19          void delayms(unsigned int ms)
+  20          {
+  21   1        unsigned char k;
+  22   1      
+  23   1        while (ms--)
+  24   1        {
+  25   2          for (k = 0; k < 114; k++)
+  26   2            ;
+  27   2        }
+  28   1      }
+  29          
+  30          /**********************************************************
+  31          
+  32          扫描编码器子函数
+  33          
+  34          在编码器引脚A为低电平期间：
+  35          
+  36          编码器引脚B从0到1为正转，编码器引脚B从1到0为反转。
+  37          
+  38          **********************************************************/
+  39          void scan_encoder(void) 
+  40          { 
+  41   1         static  bit  Curr_b;  //定义一个变量来储存当前B信号 
+  42   1         static  bit  Last_b;  //定义一个变量来储存上次B脚信号 
+  43   1         static  bit  update= 0;
+  44   1      
+  45   1         if( BMA && BMB)           //编码器无转动退出
+  46   1         {
+  47   2           update = 0; 
+  48   2           return;
+  49   2         }
+  50   1      
+  51   1         Last_b = BMB;       //记录B信号
+  52   1      
+  53   1         while(!BMA)                //等待A由低变高
+  54   1         { 
+  55   2           Curr_b = BMB;     //记录等待期间的B信号(指当前B信号)
+C51 COMPILER V8.02   BMKG                                                                  12/31/2009 09:50:56 PAGE 2   
+
+  56   2           update = 1;
+  57   2         
+  58   2              if(!BMC)                //当按下旋钮时
+  59   2           {
+  60   3             counter = 0;            //计数单元清零(归位)
+  61   3             delayms(10);
+  62   3           }
+  63   2         
+  64   2         
+  65   2         } 
+  66   1      
+  67   1         if(update)
+  68   1         {
+  69   2         update = 0 ;
+  70   2           if( (Last_b == 0)&&(Curr_b== 1) ) //B从0到1为正转
+  71   2           { 
+  72   3         if(counter == 255)
+  73   3             return;
+  74   3             counter++;          //正转计数加
+  75   3           } 
+  76   2           else if( (Last_b == 1)&&(Curr_b == 0) ) //B从1到0为反转
+  77   2           { 
+  78   3             if(counter == 0)
+  79   3             return;
+  80   3             counter--;         //反转计数减
+  81   3           } 
+  82   2         }
+  83   1      }
+  84          
+  85          /**********************************************************
+  86          
+  87          主函数
+  88          
+  89          **********************************************************/
+  90          void  main(void)
+  91          {
+  92   1         P0 = 0xff;
+  93   1         P1 = 0xff;
+  94   1         P2 = 0xff;
+  95   1      
+  96   1         T2CON = 0x00;               //设置T2CON寄存器         
+  97   1         TH2 = 0xfc;                 //1ms定时
+  98   1         TL2 = 0x66;
+  99   1         ET2 = 1;                    //启用Timer2中断
+ 100   1         EA = 1;                     //总中断允许
+ 101   1         TR2 = 1;                    //启动定时器2
+ 102   1         counter = 0;                //计数单元清零
+ 103   1      
+ 104   1         while(1)
+ 105   1         {
+ 106   2      
+ 107   2         scan_encoder();
+ 108   2          if(!BMC)                //当按下旋钮时
+ 109   2           {
+ 110   3             counter = 0;            //计数单元清零(归位)
+ 111   3             delayms(10);
+ 112   3           } 
+ 113   2         }
+ 114   1      }
+ 115          
+ 116          /*********************************************************
+ 117          
+C51 COMPILER V8.02   BMKG                                                                  12/31/2009 09:50:56 PAGE 3   
+
+ 118          Timer2中断函数
+ 119          
+ 120          **********************************************************/
+ 121          void  timer2() interrupt 5 
+ 122          { 
+ 123   1         TR2 = 0;
+ 124   1         TF2 = 0;                         //手工清中断标志  
+ 125   1         TH2 = 0xfc;                      //1ms定时常数
+ 126   1         TL2 = 0x66;
+ 127   1      
+ 128   1         if(n >= 3)                       //3位数码管显示
+ 129   1         {
+ 130   2           n = 0;
+ 131   2           shift = 0x7f;                  //送位码初值
+ 132   2           P2 = 0xff;                     //关闭显示
+ 133   2         }
+ 134   1         else
+ 135   1         {
+ 136   2           display[0] = counter%10;       //个位数据
+ 137   2           display[1] = (counter%100)/10; //十位数据
+ 138   2           display[2] = counter/100;      //百位数据
+ 139   2           
+ 140   2           if(display[2] == 0)
+ 141   2           {
+ 142   3             display[2] = 0x0a;           //百位为0,不显示
+ 143   3             if(display[1] == 0)
+ 144   3             display[1]  =0x0a;           //十位为0,不显示
+ 145   3      }
+ 146   2      
+ 147   2           P0 = LEDData[display[n++]];    //送段码
+ 148   2           P2 = shift;                    //送位码
+ 149   2           shift = (shift>>1)|0x80;       //调整位码
+ 150   2         }
+ 151   1         TR2 = 1;
+ 152   1      }
+ 153          
+ 154          /*********************************************************/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    258    ----
+   CONSTANT SIZE    =     11    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      6    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

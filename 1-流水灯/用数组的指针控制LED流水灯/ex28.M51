@@ -1,0 +1,109 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        06/24/2009  15:54:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE ex28.obj TO ex28 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ex28.obj (EX28)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?COPY)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDOPTR)
+
+
+LINK MAP OF MODULE:  ex28 (EX28)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     002BH     UNIT         _DATA_GROUP_
+            IDATA   0033H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0123H     UNIT         ?C?LIB_CODE
+            CODE    0126H     003AH     UNIT         ?PR?MAIN?EX28
+            CODE    0160H     0028H     UNIT         ?CO?EX28
+            CODE    0188H     000DH     UNIT         ?PR?DELAY150MS?EX28
+            CODE    0195H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ex28 (EX28)
+
+
+SEGMENT                          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH
+----------------------------------------------
+?C_C51STARTUP                  -----    -----
+  +--> ?PR?MAIN?EX28
+
+?PR?MAIN?EX28                  0008H    002BH
+  +--> ?CO?EX28
+  +--> ?PR?DELAY150MS?EX28
+
+
+
+SYMBOL TABLE OF MODULE:  ex28 (EX28)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EX28
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+BL51 BANKED LINKER/LOCATER V6.00                                                      06/24/2009  15:54:07  PAGE 2
+
+
+  C:0188H         PUBLIC        delay150ms
+  C:0126H         PUBLIC        main
+  C:0160H         SYMBOL        _?ix1000
+  -------         PROC          DELAY150MS
+  -------         DO            
+  D:0007H         SYMBOL        m
+  D:0006H         SYMBOL        n
+  -------         ENDDO         
+  C:0188H         LINE#         6
+  C:0188H         LINE#         7
+  C:0188H         LINE#         9
+  C:018AH         LINE#         10
+  C:0194H         LINE#         12
+  -------         ENDPROC       DELAY150MS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0005H         SYMBOL        i
+  D:0008H         SYMBOL        Tab
+  D:0030H         SYMBOL        p
+  -------         ENDDO         
+  C:0126H         LINE#         16
+  C:0126H         LINE#         17
+  C:0126H         LINE#         19
+  C:0139H         LINE#         26
+  C:0142H         LINE#         27
+  C:0142H         LINE#         28
+  C:0142H         LINE#         29
+  C:0144H         LINE#         30
+  C:0144H         LINE#         31
+  C:0154H         LINE#         32
+  C:0157H         LINE#         33
+  C:015AH         LINE#         34
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX28
+
+  -------         MODULE        ?C?COPY
+  C:00D3H         PUBLIC        ?C?COPY
+  -------         ENDMOD        ?C?COPY
+
+  -------         MODULE        ?C?CLDOPTR
+  C:00F9H         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+Program Size: data=52.0 xdata=0 code=417
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

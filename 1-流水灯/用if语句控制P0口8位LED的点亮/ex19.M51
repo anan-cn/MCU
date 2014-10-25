@@ -1,0 +1,73 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        06/24/2009  13:53:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE ex19.obj TO ex19 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ex19.obj (EX19)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  ex19 (EX19)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     000EH     UNIT         ?PR?MAIN?EX19
+            CODE    0011H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ex19 (EX19)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?EX19
+
+
+
+SYMBOL TABLE OF MODULE:  ex19 (EX19)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EX19
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  B:0090H.4       PUBLIC        K5
+  D:0080H         PUBLIC        P0
+  B:0090H.5       PUBLIC        K6
+  D:0090H         PUBLIC        P1
+  C:0003H         PUBLIC        main
+  -------         PROC          MAIN
+  C:0003H         LINE#         8
+  C:0003H         LINE#         9
+  C:0003H         LINE#         10
+  C:0003H         LINE#         11
+  C:0003H         LINE#         12
+BL51 BANKED LINKER/LOCATER V6.00                                                      06/24/2009  13:53:29  PAGE 2
+
+
+  C:0006H         LINE#         13
+  C:0009H         LINE#         14
+  C:000CH         LINE#         15
+  C:000FH         LINE#         16
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX19
+
+Program Size: data=9.0 xdata=0 code=29
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

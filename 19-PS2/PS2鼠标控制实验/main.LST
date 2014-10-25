@@ -1,0 +1,70 @@
+C51 COMPILER V8.18   MAIN                                                                  01/04/2010 16:32:45 PAGE 1   
+
+
+C51 COMPILER V8.18, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          #include"mouse.h"
+   3          #include"LCD1602_4.h"
+   4          
+   5          sbit beep=P3^6;
+   6          
+   7          void main()
+   8          {
+   9   1      
+  10   1              LCM1602_Init();//初始化液晶1602
+  11   1              Init_mouse();
+  12   1              mouse_send_data(0xf4);//向鼠标发送0xF4命令发其开始工作 
+  13   1              EX1=0;//关掉外部中断以避开鼠标发回的应答
+  14   1              delayms(100);
+  15   1              EX1=1;//重开外部中断
+  16   1              while(1)
+  17   1              {               
+  18   2                      CLEARSCREEN;//清屏
+  19   2                      LCM1602_write_string(0,0,"x:");
+  20   2                      num(0,2,move_x);//x坐标值
+  21   2                      LCM1602_write_string(0,8,"y:");
+  22   2                      num(0,10,move_y);//y坐标值
+  23   2                      if(mouse_data[0]&0x01)//如果点下左键
+  24   2                      {
+  25   3                              beep=0;
+  26   3                              LCM1602_write_string(1,0,"left");
+  27   3                      }
+  28   2                      else if(mouse_data[0]&0x02)//如果点下右键
+  29   2                      {
+  30   3                              beep=0;
+  31   3                              LCM1602_write_string(1,0,"right");
+  32   3                      }
+  33   2                      else if(mouse_data[0]&0x04)//如果点下中键
+  34   2                      {
+  35   3                              beep=0;
+  36   3                              LCM1602_write_string(1,0,"middle");
+  37   3                      }
+  38   2                      else
+  39   2                      {
+  40   3                              beep=1;
+  41   3                              LCM1602_write_string(1,0,"nothing");
+  42   3                      } 
+  43   2                      delayms(50);
+  44   2              }
+  45   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    837    ----
+   CONSTANT SIZE    =     38    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     22      13
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V8.18   MAIN                                                                  01/04/2010 16:32:45 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

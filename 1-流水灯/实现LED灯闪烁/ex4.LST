@@ -1,0 +1,48 @@
+C51 COMPILER V8.02   EX4                                                                   06/24/2009 13:31:57 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE EX4
+OBJECT MODULE PLACED IN ex4.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ex4.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include<reg51.h>    //包含单片机寄存器的头文件
+   3          /****************************************
+   4          函数功能：延时一段时间
+   5          *****************************************/
+   6          void delay(void)        //两个void意思分别为无需返回值，没有参数传递
+   7          {
+   8   1        unsigned int i;       //定义无符号整数，最大取值范围65535
+   9   1        for(i=0;i<20000;i++)  //做20000次空循环
+  10   1              ;               //什么也不做，等待一个机器周期
+  11   1      }
+  12          /*******************************************************
+  13          函数功能：主函数 （C语言规定必须有也只能有1个主函数）
+  14          ********************************************************/
+  15          void main(void) 
+  16          {
+  17   1        while(1)      //无限循环
+  18   1         {
+  19   2                P0=0xfe;   //P1=1111 1110B， P0.0输出低电平
+  20   2                delay();   //延时一段时间
+  21   2                P0=0xff;   //P1=1111 1111B， P0.0输出高电平
+  22   2                delay();  //延时一段时间
+  23   2               }
+  24   1      }
+  25          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     29    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

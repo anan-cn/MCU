@@ -1,0 +1,92 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        06/25/2009  00:45:20  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE ex111.obj TO ex111 RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  ex111.obj (EX111)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  ex111 (EX111)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0019H     UNIT         ?PR?MAIN?EX111
+            CODE    001CH     0012H     UNIT         ?PR?_DELAYMS?EX111
+            CODE    002EH     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   ex111 (EX111)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?EX111
+
+?PR?MAIN?EX111
+  +--> ?PR?_DELAYMS?EX111
+
+
+
+SYMBOL TABLE OF MODULE:  ex111 (EX111)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EX111
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  C:0003H         PUBLIC        main
+  C:001CH         PUBLIC        _delayms
+  -------         PROC          _DELAYMS
+  D:0007H         SYMBOL        ms
+  -------         DO            
+  D:0006H         SYMBOL        i
+BL51 BANKED LINKER/LOCATER V6.00                                                      06/25/2009  00:45:20  PAGE 2
+
+
+  -------         ENDDO         
+  C:001CH         LINE#         7
+  C:001CH         LINE#         9
+  C:001CH         LINE#         11
+  C:0022H         LINE#         12
+  C:0022H         LINE#         13
+  C:002DH         LINE#         14
+  C:002DH         LINE#         15
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          MAIN
+  -------         DO            
+  D:0004H         SYMBOL        LED
+  -------         ENDDO         
+  C:0003H         LINE#         17
+  C:0003H         LINE#         18
+  C:0003H         LINE#         20
+  C:0005H         LINE#         21
+  C:0007H         LINE#         23
+  C:0007H         LINE#         24
+  C:0007H         LINE#         25
+  C:000CH         LINE#         26
+  C:0018H         LINE#         27
+  C:001AH         LINE#         28
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        EX111
+
+Program Size: data=9.0 xdata=0 code=58
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

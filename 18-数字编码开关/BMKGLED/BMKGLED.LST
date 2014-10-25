@@ -1,0 +1,203 @@
+C51 COMPILER V8.02   BMKGLED                                                               12/31/2009 09:55:33 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE BMKGLED
+OBJECT MODULE PLACED IN BMKGLED.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE BMKGLED.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          
+   3          sbit  PINA   = P1^4;
+   4          sbit  PINB   = P1^5;
+   5          sbit  PIND   = P1^6;
+   6          
+   7          sbit  BEEP   = P3^6 ;        //蜂鸣器
+   8          
+   9          unsigned char direction;
+  10          unsigned char PWM = 0x7f ;   //赋初值
+  11          
+  12          /*********************************************************
+  13          
+  14          延时子程序
+  15          
+  16          *********************************************************/
+  17          void delayms(unsigned char ms) 
+  18          {
+  19   1         unsigned char i ;
+  20   1         while(ms--)
+  21   1         {
+  22   2           for(i=0 ; i<114 ; i++);
+  23   2         }
+  24   1      }
+  25          
+  26          /*********************************************************
+  27          
+  28          延时子程序
+  29          
+  30          *********************************************************/
+  31          void delay(unsigned char t)
+  32          { 
+  33   1         while(t--) ;
+  34   1      }
+  35          
+  36          /*********************************************************
+  37          
+  38          蜂鸣器子程序
+  39          
+  40          *********************************************************/
+  41          void Beep()     
+  42          {
+  43   1         unsigned char i  ;
+  44   1         for (i=0  ;i<100  ;i++)
+  45   1         {
+  46   2           delay(100);
+  47   2           BEEP = !BEEP;                 //Beep取反
+  48   2         } 
+  49   1         BEEP = 1;                       //关闭蜂鸣器
+  50   1         delayms(100);
+  51   1      } 
+  52          
+  53          /**********************************************************
+  54          
+  55          扫描编码器子函数
+C51 COMPILER V8.02   BMKGLED                                                               12/31/2009 09:55:33 PAGE 2   
+
+  56          
+  57          在编码器引脚A为低电平期间：
+  58          
+  59          编码器引脚B从0到1为正转，编码器引脚B从1到0为反转。
+  60          
+  61          **********************************************************/
+  62          void scan_encoder(void) 
+  63          { 
+  64   1         static  bit  Curr_encoder_b;  //定义一个变量来储存当前B信号 
+  65   1         static  bit  Last_encoder_b;  //定义一个变量来储存上次B脚信号 
+  66   1         static  bit  updata= 0;
+  67   1      
+  68   1         if( PINA && PINB)           //编码器无转动退出
+  69   1         {
+  70   2           updata = 0; 
+  71   2           return;
+  72   2         }
+  73   1      
+  74   1         Last_encoder_b = PINB;       //记录B信号
+  75   1      
+  76   1         while(!PINA)                //等待A由低变高
+  77   1         { 
+  78   2           Curr_encoder_b = PINB;     //记录等待期间的B信号(指当前B信号)
+  79   2           updata = 1;
+  80   2               if(! PIND)              //当按下旋钮时
+  81   2           {
+  82   3             PWM = 0x7f ;          //恢复初始值
+  83   3           }
+  84   2         } 
+  85   1      
+  86   1         if(updata)
+  87   1         {
+  88   2         updata = 0;
+  89   2           if( (Last_encoder_b == 0)&&(Curr_encoder_b== 1) ) //B从0到1为正转
+  90   2           { 
+  91   3             direction = 1;
+  92   3           }
+  93   2           else if( (Last_encoder_b == 1)&&(Curr_encoder_b == 0) ) //B从1到0为反转
+  94   2           { 
+  95   3             direction = 2;
+  96   3           }
+  97   2         }
+  98   1      }
+  99          
+ 100          /**********************************************************
+ 101          
+ 102          主程序
+ 103          
+ 104          **********************************************************/
+ 105          void main(void)
+ 106          {   
+ 107   1         P1 = 0xff;
+ 108   1         TMOD = 0x21;
+ 109   1         TH0 = 0xfe;               //1ms延时常数
+ 110   1         TL0 = 0x66;               //频率调节
+ 111   1      
+ 112   1         TH1 = PWM;                //脉宽调节
+ 113   1         TL1 = 0;
+ 114   1         EA = 1;
+ 115   1         ET0 = 1;
+ 116   1         ET1 = 1;
+ 117   1         TR0 = 1;
+C51 COMPILER V8.02   BMKGLED                                                               12/31/2009 09:55:33 PAGE 3   
+
+ 118   1      
+ 119   1         while(1)
+ 120   1         {
+ 121   2           scan_encoder();
+ 122   2      
+ 123   2           if(direction == 1)      //顺时针旋转
+ 124   2           {
+ 125   3             if(PWM!=0x02)
+ 126   3              PWM--; 
+ 127   3             else 
+ 128   3              Beep() ; 
+ 129   3             direction = 0;
+ 130   3           }
+ 131   2      
+ 132   2           if(direction == 2)      //逆时针旋转
+ 133   2           {
+ 134   3             if(PWM!=0xff)
+ 135   3              PWM++ ;
+ 136   3             else 
+ 137   3              Beep() ; 
+ 138   3             direction = 0;
+ 139   3           }
+ 140   2      
+ 141   2           if(! PIND)              //当按下旋钮时
+ 142   2           {
+ 143   3             PWM = 0x7f ;          //恢复初始值
+ 144   3           }
+ 145   2         }
+ 146   1      }
+ 147          
+ 148          /*********************************************************
+ 149          
+ 150          定时器0中断服务程序  （频率）
+ 151          
+ 152          *********************************************************/
+ 153          void timer0() interrupt 1 
+ 154          {  
+ 155   1          TR1 = 0;
+ 156   1          TH0 = 0xfe;      //1ms延时常数
+ 157   1          TL0 = 0x66;      //频率调节
+ 158   1          TH1 = PWM;
+ 159   1          TR1 = 1;
+ 160   1          P0 = 0x00;      //启动输出
+ 161   1      }
+ 162          
+ 163          /*********************************************************
+ 164          
+ 165          定时器1中断服务程序 （脉宽）
+ 166          
+ 167          *********************************************************/
+ 168          void timer1() interrupt 3 
+ 169          { 
+ 170   1          TR1 = 0;
+ 171   1          P0 = 0xff;     //结束输出
+ 172   1      }
+ 173          
+ 174          /*********************************************************/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    201    ----
+   CONSTANT SIZE    =   ----    ----
+C51 COMPILER V8.02   BMKGLED                                                               12/31/2009 09:55:33 PAGE 4   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      3    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

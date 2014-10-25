@@ -1,0 +1,541 @@
+BL51 BANKED LINKER/LOCATER V6.20                                                        01/04/2010  16:32:45  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.20, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, main.obj TO mouse RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  main.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?COPY)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CLDPTR)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?UIDIV)
+
+
+LINK MAP OF MODULE:  mouse (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0014H     UNIT         ?DT?MAIN
+                    001CH     0004H                  *** GAP ***
+            DATA    0020H     0002H     BIT_ADDR     ?BA?MAIN
+            DATA    0022H     000DH     UNIT         _DATA_GROUP_
+            IDATA   002FH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0010H     UNIT         ?PR?CHECKOUT?MAIN
+            CODE    0013H     0003H     ABSOLUTE     
+            CODE    0016H     0164H     UNIT         ?C?LIB_CODE
+            CODE    017AH     009DH     UNIT         ?PR?DATA_ANALYSE?MAIN
+            CODE    0217H     0097H     UNIT         ?PR?_NUM?MAIN
+            CODE    02AEH     008FH     UNIT         ?PR?MAIN?MAIN
+            CODE    033DH     008CH     UNIT         ?C_C51STARTUP
+            CODE    03C9H     004EH     UNIT         ?PR?_MOUSE_SEND_DATA?MAIN
+            CODE    0417H     003CH     UNIT         ?PR?RECEIVEDATA?MAIN
+            CODE    0453H     0026H     UNIT         ?CO?MAIN
+            CODE    0479H     001EH     UNIT         ?PR?LCM1602_INIT?MAIN
+            CODE    0497H     001EH     UNIT         ?PR?_LCM1602_WRITE_CMD?MAIN
+            CODE    04B5H     001EH     UNIT         ?PR?_LCM1602_WRITE_DATA?MAIN
+            CODE    04D3H     0018H     UNIT         ?PR?_DELAYMS?MAIN
+            CODE    04EBH     0016H     UNIT         ?PR?LCM1602_READ_BF?MAIN
+            CODE    0501H     0016H     UNIT         ?PR?LCD_EN_WRITE?MAIN
+            CODE    0517H     0016H     UNIT         ?PR?_LCM1602_WRITE_STRING?MAIN
+            CODE    052DH     0015H     UNIT         ?PR?_LCM1602_SET_XY?MAIN
+            CODE    0542H     000FH     UNIT         ?C_INITSEG
+            CODE    0551H     000CH     UNIT         ?PR?INIT_MOUSE?MAIN
+            CODE    055DH     000BH     UNIT         ?PR?_DELAY10US?MAIN
+            CODE    0568H     0008H     UNIT         ?PR?_LCM1602_WRITE_CHAR?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   mouse (?C_STARTUP)
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 2
+
+
+
+
+SEGMENT                                  DATA_GROUP 
+  +--> CALLED SEGMENT                  START    LENGTH
+------------------------------------------------------
+?C_C51STARTUP                          -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                          -----    -----
+  +--> ?PR?LCM1602_INIT?MAIN
+  +--> ?PR?INIT_MOUSE?MAIN
+  +--> ?PR?_MOUSE_SEND_DATA?MAIN
+  +--> ?PR?_DELAYMS?MAIN
+  +--> ?PR?_LCM1602_WRITE_CMD?MAIN
+  +--> ?CO?MAIN
+  +--> ?PR?_LCM1602_WRITE_STRING?MAIN
+  +--> ?PR?_NUM?MAIN
+
+?PR?LCM1602_INIT?MAIN                  -----    -----
+  +--> ?PR?_LCM1602_WRITE_CMD?MAIN
+
+?PR?_LCM1602_WRITE_CMD?MAIN            -----    -----
+  +--> ?PR?LCM1602_READ_BF?MAIN
+  +--> ?PR?LCD_EN_WRITE?MAIN
+
+?PR?_MOUSE_SEND_DATA?MAIN              -----    -----
+  +--> ?PR?_DELAY10US?MAIN
+
+?PR?_LCM1602_WRITE_STRING?MAIN         -----    -----
+  +--> ?PR?_LCM1602_SET_XY?MAIN
+  +--> ?PR?_LCM1602_WRITE_DATA?MAIN
+
+?PR?_LCM1602_SET_XY?MAIN               -----    -----
+  +--> ?PR?_LCM1602_WRITE_CMD?MAIN
+
+?PR?_LCM1602_WRITE_DATA?MAIN           -----    -----
+  +--> ?PR?LCM1602_READ_BF?MAIN
+  +--> ?PR?LCD_EN_WRITE?MAIN
+
+?PR?_NUM?MAIN                          0022H    000DH
+  +--> ?CO?MAIN
+  +--> ?PR?_LCM1602_WRITE_CHAR?MAIN
+  +--> ?PR?_LCM1602_WRITE_STRING?MAIN
+
+?PR?_LCM1602_WRITE_CHAR?MAIN           -----    -----
+  +--> ?PR?_LCM1602_SET_XY?MAIN
+  +--> ?PR?_LCM1602_WRITE_DATA?MAIN
+
+*** NEW ROOT ***************************************************
+
+?PR?RECEIVEDATA?MAIN                   -----    -----
+  +--> ?PR?DATA_ANALYSE?MAIN
+
+?PR?DATA_ANALYSE?MAIN                  -----    -----
+  +--> ?PR?CHECKOUT?MAIN
+
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 3
+
+
+
+
+SYMBOL TABLE OF MODULE:  mouse (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:033DH         SEGMENT       ?C_C51STARTUP
+  I:002FH         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0340H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:033DH         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:033DH         LINE#         133
+  C:033FH         LINE#         134
+  C:0340H         LINE#         135
+  C:0341H         LINE#         136
+  C:0343H         LINE#         185
+  C:0346H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:0020H         PUBLIC        mouse_fuction
+  D:0008H         PUBLIC        mouse_buffer
+  D:00A8H         PUBLIC        IE
+  B:00A0H.2       PUBLIC        LCD1602_EN
+  D:0013H         PUBLIC        move_x
+  D:0015H         PUBLIC        move_y
+  B:0021H.0       PUBLIC        mouse_byte_bit0
+  B:0021H.1       PUBLIC        mouse_byte_bit1
+  C:0511H         PUBLIC        LCD_en_write
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 4
+
+
+  B:0021H.2       PUBLIC        mouse_byte_bit2
+  B:0021H.3       PUBLIC        mouse_byte_bit3
+  B:0021H.4       PUBLIC        mouse_byte_bit4
+  D:00B8H         PUBLIC        IP
+  B:0021H.5       PUBLIC        mouse_byte_bit5
+  B:0021H.6       PUBLIC        mouse_byte_bit6
+  B:0021H.7       PUBLIC        mouse_byte_bit7
+  B:00B0H.6       PUBLIC        beep
+  C:0479H         PUBLIC        LCM1602_Init
+  C:0551H         PUBLIC        Init_mouse
+  B:00A0H.0       PUBLIC        LCD1602_RS
+  C:02AEH         PUBLIC        main
+  C:052DH         PUBLIC        _LCM1602_set_xy
+  B:00A0H.1       PUBLIC        LCD1602_RW
+  D:0017H         PUBLIC        mouse_data
+  D:001AH         PUBLIC        mouse_buffer_bit
+  C:0517H         PUBLIC        _LCM1602_write_string
+  C:04B5H         PUBLIC        _LCM1602_write_data
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:03C9H         PUBLIC        _mouse_send_data
+  C:0568H         PUBLIC        _LCM1602_write_char
+  C:0003H         PUBLIC        Checkout
+  C:0473H         SYMBOL        _?ix1000
+  D:0021H         PUBLIC        mouse_byte
+  C:0417H         PUBLIC        ReceiveData
+  D:00E0H         PUBLIC        ACC
+  B:00A8H.1       PUBLIC        ET0
+  D:001BH         PUBLIC        mouse_data_bit
+  C:0497H         PUBLIC        _LCM1602_write_cmd
+  B:00A8H.2       PUBLIC        EX1
+  B:00D0H.0       PUBLIC        P
+  C:0217H         PUBLIC        _num
+  B:00B8H.2       PUBLIC        PX1
+  C:055DH         PUBLIC        _delay10us
+  B:00B0H.2       PUBLIC        mouse_SDA
+  B:00B0H.3       PUBLIC        mouse_CLK
+  D:00C8H         PUBLIC        T2CON
+  C:04EBH         PUBLIC        LCM1602_Read_BF
+  C:017AH         PUBLIC        data_analyse
+  C:04D3H         PUBLIC        _delayms
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          _DELAY10US
+  D:0006H         SYMBOL        t
+  C:055DH         LINE#         9
+  C:055DH         LINE#         10
+  C:055DH         LINE#         11
+  C:0567H         LINE#         12
+  -------         ENDPROC       _DELAY10US
+  -------         PROC          _DELAYMS
+  D:0006H         SYMBOL        t
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0003H         SYMBOL        j
+  -------         ENDDO         
+  C:04D3H         LINE#         14
+  C:04D3H         LINE#         15
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 5
+
+
+  C:04D3H         LINE#         18
+  C:04DDH         LINE#         19
+  C:04EAH         LINE#         20
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          INIT_MOUSE
+  C:0551H         LINE#         30
+  C:0551H         LINE#         31
+  C:0551H         LINE#         32
+  C:0554H         LINE#         33
+  C:0556H         LINE#         34
+  C:0558H         LINE#         35
+  C:055AH         LINE#         36
+  C:055CH         LINE#         37
+  -------         ENDPROC       INIT_MOUSE
+  -------         PROC          _MOUSE_SEND_DATA
+  D:0005H         SYMBOL        dat
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:03C9H         LINE#         43
+  C:03CBH         LINE#         44
+  C:03CBH         LINE#         46
+  C:03CDH         LINE#         47
+  C:03CEH         LINE#         48
+  C:03D0H         LINE#         49
+  C:03D7H         LINE#         50
+  C:03D9H         LINE#         51
+  C:03E0H         LINE#         52
+  C:03E2H         LINE#         53
+  C:03E4H         LINE#         54
+  C:03E4H         LINE#         55
+  C:03E7H         LINE#         56
+  C:03F4H         LINE#         57
+  C:03F7H         LINE#         58
+  C:03FBH         LINE#         59
+  C:03FEH         LINE#         60
+  C:0403H         LINE#         61
+  C:0406H         LINE#         62
+  C:0409H         LINE#         63
+  C:040BH         LINE#         64
+  C:040EH         LINE#         65
+  C:0411H         LINE#         66
+  C:0414H         LINE#         67
+  C:0416H         LINE#         68
+  -------         ENDPROC       _MOUSE_SEND_DATA
+  -------         PROC          CHECKOUT
+  C:0003H         LINE#         73
+  C:0003H         LINE#         74
+  C:0003H         LINE#         75
+  C:0005H         LINE#         76
+  C:000DH         LINE#         77
+  C:0010H         LINE#         79
+  C:0012H         LINE#         80
+  -------         ENDPROC       CHECKOUT
+  -------         PROC          DATA_ANALYSE
+  C:017AH         LINE#         85
+  C:017AH         LINE#         86
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 6
+
+
+  C:017AH         LINE#         88
+  C:0180H         LINE#         89
+  C:0186H         LINE#         90
+  C:018CH         LINE#         91
+  C:0192H         LINE#         92
+  C:0198H         LINE#         93
+  C:019EH         LINE#         94
+  C:01A4H         LINE#         95
+  C:01AAH         LINE#         96
+  C:01B0H         LINE#         97
+  C:01B0H         LINE#         98
+  C:01B7H         LINE#         99
+  C:01C1H         LINE#         100
+  C:01C7H         LINE#         101
+  C:01C7H         LINE#         102
+  C:01C9H         LINE#         103
+  C:01CEH         LINE#         104
+  C:01CEH         LINE#         105
+  C:01E3H         LINE#         106
+  C:01E5H         LINE#         108
+  C:01E5H         LINE#         109
+  C:01F0H         LINE#         110
+  C:01F0H         LINE#         111
+  C:01F5H         LINE#         112
+  C:01F5H         LINE#         113
+  C:020AH         LINE#         114
+  C:020BH         LINE#         116
+  C:020BH         LINE#         117
+  C:0216H         LINE#         118
+  C:0216H         LINE#         119
+  C:0216H         LINE#         120
+  C:0216H         LINE#         121
+  -------         ENDPROC       DATA_ANALYSE
+  -------         PROC          RECEIVEDATA
+  C:0417H         LINE#         126
+  C:0424H         LINE#         128
+  C:042BH         LINE#         129
+  C:042BH         LINE#         130
+  C:042EH         LINE#         131
+  C:043DH         LINE#         132
+  C:043DH         LINE#         133
+  C:0442H         LINE#         134
+  C:0442H         LINE#         135
+  C:0445H         LINE#         136
+  C:0448H         LINE#         137
+  C:0448H         LINE#         138
+  -------         ENDPROC       RECEIVEDATA
+  -------         PROC          LCM1602_INIT
+  C:0479H         LINE#         23
+  C:0479H         LINE#         24
+  C:0479H         LINE#         25
+  C:047EH         LINE#         26
+  C:0483H         LINE#         27
+  C:0488H         LINE#         28
+  C:048DH         LINE#         29
+  C:0492H         LINE#         30
+  -------         ENDPROC       LCM1602_INIT
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 7
+
+
+  -------         PROC          LCM1602_READ_BF
+  C:04EBH         LINE#         34
+  C:04EBH         LINE#         35
+  C:04EBH         LINE#         36
+  C:04EDH         LINE#         37
+  C:04EFH         LINE#         38
+  C:04F1H         LINE#         39
+  C:04F9H         LINE#         40
+  C:04FEH         LINE#         41
+  C:0500H         LINE#         42
+  -------         ENDPROC       LCM1602_READ_BF
+  -------         PROC          L?0087
+  -------         ENDPROC       L?0087
+  -------         PROC          LCD_EN_WRITE
+  C:0511H         LINE#         43
+  C:0511H         LINE#         44
+  C:0511H         LINE#         45
+  C:0513H         LINE#         46
+  C:0514H         LINE#         47
+  C:0516H         LINE#         48
+  -------         ENDPROC       LCD_EN_WRITE
+  -------         PROC          _LCM1602_WRITE_CMD
+  D:0007H         SYMBOL        command
+  C:0497H         LINE#         51
+  C:0497H         LINE#         52
+  C:0497H         LINE#         53
+  C:049AH         LINE#         54
+  C:049CH         LINE#         55
+  C:049CH         LINE#         57
+  C:049CH         LINE#         58
+  C:049CH         LINE#         59
+  C:049FH         LINE#         60
+  C:04A4H         LINE#         61
+  C:04A7H         LINE#         62
+  C:04B2H         LINE#         63
+  -------         ENDPROC       _LCM1602_WRITE_CMD
+  -------         PROC          _LCM1602_WRITE_DATA
+  D:0007H         SYMBOL        dat
+  C:04B5H         LINE#         66
+  C:04B5H         LINE#         67
+  C:04B5H         LINE#         68
+  C:04B8H         LINE#         69
+  C:04BAH         LINE#         70
+  C:04BAH         LINE#         71
+  C:04BAH         LINE#         72
+  C:04BAH         LINE#         73
+  C:04BDH         LINE#         74
+  C:04C2H         LINE#         75
+  C:04C5H         LINE#         76
+  C:04D0H         LINE#         77
+  -------         ENDPROC       _LCM1602_WRITE_DATA
+  -------         PROC          _LCM1602_SET_XY
+  D:0007H         SYMBOL        x
+  D:0005H         SYMBOL        y
+  -------         DO            
+  D:0004H         SYMBOL        address
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 8
+
+
+  C:052DH         LINE#         80
+  C:052DH         LINE#         81
+  C:052DH         LINE#         83
+  C:0530H         LINE#         84
+  C:0533H         LINE#         85
+  C:0539H         LINE#         87
+  C:053DH         LINE#         88
+  -------         ENDPROC       _LCM1602_SET_XY
+  -------         PROC          _LCM1602_WRITE_CHAR
+  D:0082H         SYMBOL        x
+  D:0005H         SYMBOL        y
+  D:0003H         SYMBOL        dat
+  C:0568H         LINE#         91
+  C:0568H         LINE#         92
+  C:0568H         LINE#         93
+  C:056BH         LINE#         94
+  -------         ENDPROC       _LCM1602_WRITE_CHAR
+  -------         PROC          _LCM1602_WRITE_STRING
+  D:0007H         SYMBOL        x
+  D:0005H         SYMBOL        y
+  D:0001H         SYMBOL        s
+  C:0517H         LINE#         97
+  C:0517H         LINE#         98
+  C:0517H         LINE#         99
+  C:051AH         LINE#         100
+  C:0520H         LINE#         101
+  C:0520H         LINE#         102
+  C:0523H         LINE#         103
+  C:052AH         LINE#         104
+  C:052CH         LINE#         105
+  -------         ENDPROC       _LCM1602_WRITE_STRING
+  -------         PROC          _NUM
+  D:0022H         SYMBOL        x
+  D:0023H         SYMBOL        y
+  D:0024H         SYMBOL        n
+  -------         DO            
+  D:0003H         SYMBOL        i
+  D:0026H         SYMBOL        length
+  D:0027H         SYMBOL        a
+  D:002DH         SYMBOL        nx
+  -------         ENDDO         
+  C:0217H         LINE#         107
+  C:021FH         LINE#         108
+  C:021FH         LINE#         109
+  C:0232H         LINE#         110
+  C:0238H         LINE#         111
+  C:0248H         LINE#         112
+  C:024AH         LINE#         113
+  C:024AH         LINE#         114
+  C:0257H         LINE#         115
+  C:0266H         LINE#         116
+  C:026AH         LINE#         117
+  C:0270H         LINE#         118
+  C:0277H         LINE#         119
+  C:0277H         LINE#         120
+  C:028DH         LINE#         121
+  C:029CH         LINE#         122
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  16:32:45  PAGE 9
+
+
+  C:02A0H         LINE#         123
+  C:02ADH         LINE#         124
+  -------         ENDPROC       _NUM
+  -------         PROC          MAIN
+  C:02AEH         LINE#         7
+  C:02AEH         LINE#         8
+  C:02AEH         LINE#         10
+  C:02B1H         LINE#         11
+  C:02B4H         LINE#         12
+  C:02B9H         LINE#         13
+  C:02BBH         LINE#         14
+  C:02C2H         LINE#         15
+  C:02C4H         LINE#         16
+  C:02C4H         LINE#         17
+  C:02C4H         LINE#         18
+  C:02C9H         LINE#         19
+  C:02D5H         LINE#         20
+  C:02E0H         LINE#         21
+  C:02EDH         LINE#         22
+  C:02F8H         LINE#         23
+  C:02FDH         LINE#         24
+  C:02FDH         LINE#         25
+  C:02FFH         LINE#         26
+  C:0305H         LINE#         27
+  C:0307H         LINE#         28
+  C:030CH         LINE#         29
+  C:030CH         LINE#         30
+  C:030EH         LINE#         31
+  C:0314H         LINE#         32
+  C:0316H         LINE#         33
+  C:031BH         LINE#         34
+  C:031BH         LINE#         35
+  C:031DH         LINE#         36
+  C:0323H         LINE#         37
+  C:0325H         LINE#         39
+  C:0325H         LINE#         40
+  C:0327H         LINE#         41
+  C:0334H         LINE#         42
+  C:0334H         LINE#         43
+  C:033BH         LINE#         44
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        ?C?COPY
+  C:00E6H         PUBLIC        ?C?COPY
+  -------         ENDMOD        ?C?COPY
+
+  -------         MODULE        ?C?CLDPTR
+  C:010CH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?UIDIV
+  C:0125H         PUBLIC        ?C?UIDIV
+  -------         ENDMOD        ?C?UIDIV
+
+Program Size: data=44.0 xdata=0 code=1392
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

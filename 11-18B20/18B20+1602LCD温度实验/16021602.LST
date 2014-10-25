@@ -1,0 +1,372 @@
+C51 COMPILER V8.18   16021602                                                              12/09/2009 22:02:05 PAGE 1   
+
+
+C51 COMPILER V8.18, COMPILATION OF MODULE 16021602
+OBJECT MODULE PLACED IN 16021602.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE 16021602.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include < reg51.h >
+   2          #include < intrins.h >
+   3          #define uchar unsigned char
+   4          #define uint  unsigned int
+   5          sbit DQ = P3^3 ;  //定义DS18B20端口DQ  
+   6          sbit BEEP=P3^6  ; //蜂鸣器驱动线
+   7          bit presence  ;   //检测18b20是否插好
+   8          sbit LCD_RS = P2^0 ;             
+   9          sbit LCD_RW = P2^1 ;
+  10          sbit LCD_EN = P2^2 ;
+  11          uchar code  cdis1[ ] = {" WWW.RICHMCU.COM "} ;
+  12          uchar code  cdis2[ ] = {" WENDU:    .  C "} ;
+  13          uchar code  cdis3[ ] = {" DS18B20  ERR0R "} ;
+  14          uchar code  cdis4[ ] = {"  PLEASE CHECK  "} ;
+  15          
+  16          unsigned char data  temp_data[2] = {0x00,0x00} ;
+  17          unsigned char data  display[5] =   {0x00,0x00,0x00,0x00,0x00} ;
+  18          unsigned char code  ditab[16] =    {0x00,0x01,0x01,0x02,0x03,0x03,0x04,0x04,
+  19                                                                  0x05,0x06,0x06,0x07,0x08,0x08,0x09,0x09} ;
+  20          void beep() ; 
+  21          unsigned char code  mytab[8] = {0x0C,0x12,0x12,0x0C,0x00,0x00,0x00,0x00} ;
+  22          
+  23          #define delayNOP() ; {_nop_() ;_nop_() ;_nop_() ;_nop_() ;} ;
+  24          
+  25          /*******************************************************************/
+  26          void delay1(int ms)
+  27          {
+  28   1       unsigned char y ;
+  29   1        while(ms--)
+  30   1       {
+  31   2        for(y = 0 ; y<250 ; y++)
+  32   2        {
+  33   3         _nop_() ;
+  34   3         _nop_() ;
+  35   3         _nop_() ;
+  36   3         _nop_() ;
+  37   3        }
+  38   2       }
+  39   1      }
+  40          
+  41          /******************************************************************/
+  42          /*检查LCD忙状态                                                   */
+  43          /*lcd_busy为1时，忙，等待。lcd-busy为0时,闲，可写指令与数据。   */
+  44          /******************************************************************/ 
+  45          bit lcd_busy()
+  46           {                          
+  47   1          bit result ;
+  48   1          LCD_RS = 0 ;
+  49   1          LCD_RW = 1 ;
+  50   1          LCD_EN = 1 ;
+  51   1          delayNOP() ;
+  52   1          result = (bit)(P0&0x80) ;
+  53   1          LCD_EN = 0 ;
+  54   1          return(result) ; 
+  55   1       }
+C51 COMPILER V8.18   16021602                                                              12/09/2009 22:02:05 PAGE 2   
+
+  56          
+  57          /*写指令数据到LCD                                                  */
+  58          /*RS=L，RW=L，E=高脉冲，D0-D7=指令码。          */
+  59          /*******************************************************************/
+  60          void lcd_wcmd(uchar cmd)
+  61          {                          
+  62   1         while(lcd_busy()) ;
+  63   1          LCD_RS = 0 ;
+  64   1          LCD_RW = 0 ;
+  65   1          LCD_EN = 0 ;
+  66   1          _nop_() ;
+  67   1          _nop_() ; 
+  68   1          P0 = cmd ;
+  69   1          delayNOP() ;
+  70   1          LCD_EN = 1 ;
+  71   1          delayNOP() ;
+  72   1          LCD_EN = 0 ;  
+  73   1      }
+  74          
+  75          /*******************************************************************/
+  76          /*写显示数据到LCD                            */
+  77          /*RS=H，RW=L，E=高脉冲，D0-D7=数据。       */
+  78          /*******************************************************************/
+  79          void lcd_wdat(uchar dat)
+  80          {                          
+  81   1         while(lcd_busy()) ;
+  82   1          LCD_RS = 1 ;
+  83   1          LCD_RW = 0 ;
+  84   1          LCD_EN = 0 ;
+  85   1          P0 = dat ;
+  86   1          delayNOP() ;
+  87   1          LCD_EN = 1 ;
+  88   1          delayNOP() ;
+  89   1          LCD_EN = 0 ; 
+  90   1      }
+  91          
+  92          
+  93          /*  LCD初始化设定                                                  */
+  94          /*******************************************************************/
+  95          void lcd_init()
+  96          { 
+  97   1          delay1(15) ;   
+  98   1          lcd_wcmd(0x01) ;      //清除LCD的显示内容            
+  99   1          lcd_wcmd(0x38) ;      //16*2显示，5*7点阵，8位数据
+ 100   1          delay1(5) ;
+ 101   1          lcd_wcmd(0x38) ;         
+ 102   1          delay1(5) ;
+ 103   1          lcd_wcmd(0x38) ;         
+ 104   1          delay1(5) ;
+ 105   1      
+ 106   1          lcd_wcmd(0x0c) ;      //显示开，关光标
+ 107   1          delay1(5) ;
+ 108   1          lcd_wcmd(0x06) ;      //移动光标
+ 109   1          delay1(5) ;
+ 110   1          lcd_wcmd(0x01) ;      //清除LCD的显示内容
+ 111   1          delay1(5) ;
+ 112   1      }
+ 113          
+ 114          /*  设定显示位置                                    */
+ 115          /*******************************************************************/
+ 116          void lcd_pos(uchar pos)
+ 117          {                          
+C51 COMPILER V8.18   16021602                                                              12/09/2009 22:02:05 PAGE 3   
+
+ 118   1        lcd_wcmd(pos | 0x80) ;  //数据指针=80+地址变量
+ 119   1      }
+ 120          
+ 121          /*自定义字符写入CGRAM                                   */
+ 122          /*******************************************************************/
+ 123          void  writetab()  
+ 124          {  
+ 125   1          unsigned char i ;
+ 126   1          lcd_wcmd(0x40) ;            //写CGRAM
+ 127   1          for (i = 0 ; i< 8 ; i++)       
+ 128   1          lcd_wdat(mytab[ i ]) ;        
+ 129   1      }
+ 130          
+ 131          /*us级延时函数                                        */
+ 132          /*******************************************************************/
+ 133          
+ 134          void Delay(unsigned int num)
+ 135          {
+ 136   1        while( --num ) ;
+ 137   1      }
+ 138          
+ 139          /*初始化ds1820                                      */
+ 140          /*******************************************************************/
+ 141          Init_DS18B20(void)
+ 142          {  
+ 143   1           DQ = 1 ;      //DQ复位
+ 144   1           Delay(8) ;    //稍做延时
+ 145   1      
+ 146   1           DQ = 0 ;      //单片机将DQ拉低
+ 147   1           Delay(90) ;   //精确延时 大于 480us
+ 148   1      
+ 149   1           DQ = 1 ;       //拉高总线
+ 150   1           Delay(8) ;
+ 151   1      
+ 152   1           presence = DQ ;    //如果=0则初始化成功 =1则初始化失败
+ 153   1           Delay(100) ;
+ 154   1           DQ = 1 ; 
+ 155   1           
+ 156   1           return(presence) ; //返回信号，0=presence,1= no presence
+ 157   1      }
+ 158          
+ 159          
+ 160          /* 读一个字节                     */
+ 161          /*******************************************************************/
+ 162           ReadOneChar(void)
+ 163          {
+ 164   1      unsigned char i = 0 ;
+ 165   1      unsigned char dat = 0 ;
+ 166   1      
+ 167   1      for (i = 8 ; i > 0 ; i--)
+ 168   1        {
+ 169   2          DQ = 0 ; // 给脉冲信号
+ 170   2          dat >>= 1 ;
+ 171   2          DQ = 1 ; // 给脉冲信号
+ 172   2      
+ 173   2          if(DQ)
+ 174   2           dat |= 0x80 ;
+ 175   2          Delay(4) ;
+ 176   2        }
+ 177   1      
+ 178   1          return (dat) ;
+ 179   1      }
+C51 COMPILER V8.18   16021602                                                              12/09/2009 22:02:05 PAGE 4   
+
+ 180          
+ 181          /* 写一个字节                                         */
+ 182          /*******************************************************************/
+ 183           WriteOneChar(unsigned char dat)
+ 184          {
+ 185   1        unsigned char i = 0 ;
+ 186   1        for (i = 8 ; i > 0 ; i--)
+ 187   1        {
+ 188   2          DQ = 0 ;
+ 189   2          DQ = dat&0x01 ;
+ 190   2          Delay(5) ;
+ 191   2      
+ 192   2          DQ = 1 ;
+ 193   2          dat>>=1 ;
+ 194   2        }
+ 195   1      }
+ 196          
+ 197          /* 读取温度                            */
+ 198          /*******************************************************************/
+ 199           Read_Temperature(void)
+ 200          {
+ 201   1           Init_DS18B20() ;
+ 202   1        
+ 203   1           WriteOneChar(0xCC) ;  // 跳过读序号列号的操作
+ 204   1           WriteOneChar(0x44) ;  // 启动温度转换
+ 205   1      
+ 206   1           Init_DS18B20() ;
+ 207   1           WriteOneChar(0xCC) ;  //跳过读序号列号的操作
+ 208   1           WriteOneChar(0xBE) ;  //读取温度寄存器
+ 209   1      
+ 210   1           temp_data[0] = ReadOneChar() ;   //温度低8位
+ 211   1           temp_data[1] = ReadOneChar() ;   //温度高8位 
+ 212   1      }
+ 213          
+ 214          /* 数据转换与温度显示                                              */
+ 215          /*******************************************************************/
+ 216           Disp_Temperature()
+ 217          {
+ 218   1        display[4]=temp_data[0]&0x0f ;
+ 219   1        display[0]=ditab[display[4]]+0x30 ;//查表得小数位的值
+ 220   1        
+ 221   1        display[4]=((temp_data[0]&0xf0)>>4)|((temp_data[1]&0x0f)<<4) ;
+ 222   1        display[3]=display[4]/100+0x30 ;
+ 223   1        display[1]=display[4]%100 ;
+ 224   1        display[2]=display[1]/10+0x30 ;
+ 225   1        display[1]=display[1]%10+0x30 ;
+ 226   1      
+ 227   1          if(display[3]==0x30)        //高位为0，不显示
+ 228   1         { 
+ 229   2           display[3]=0x20 ;              
+ 230   2           if(display[2]==0x30)      //次高位为0，不显示
+ 231   2           display[2]=0x20 ;
+ 232   2         }
+ 233   1      
+ 234   1           lcd_pos(0x48) ;             
+ 235   1           lcd_wdat(display[3]) ;        //百位数显示 
+ 236   1           lcd_pos(0x49) ;             
+ 237   1           lcd_wdat(display[2]) ;        //十位数显示 
+ 238   1        lcd_pos(0x4a) ;             
+ 239   1           lcd_wdat(display[1]) ;        //个位数显示 
+ 240   1        lcd_pos(0x4c) ;             
+ 241   1           lcd_wdat(display[0]) ;        //小数位数显示 
+C51 COMPILER V8.18   16021602                                                              12/09/2009 22:02:05 PAGE 5   
+
+ 242   1      }  
+ 243          
+ 244          /*******************************************************************/
+ 245          /* 蜂鸣器响一声                 */
+ 246          /*******************************************************************/
+ 247          void beep()
+ 248            {
+ 249   1          unsigned char y ;
+ 250   1          for (y=0 ;y<100 ;y++)
+ 251   1          {
+ 252   2            Delay(60) ;
+ 253   2            BEEP=!BEEP ;                //BEEP取反
+ 254   2          } 
+ 255   1          BEEP=1 ;                      //关闭蜂鸣器
+ 256   1       Delay(40000) ;
+ 257   1        }
+ 258          
+ 259          /* DS18B20 OK 显示菜单                                             */
+ 260          /*******************************************************************/
+ 261          void  Ok_Menu ()
+ 262          { 
+ 263   1          uchar  m ;
+ 264   1          lcd_init() ;                //初始化LCD 
+ 265   1                  
+ 266   1          lcd_pos(0) ;                //设置显示位置为第一行的第1个字符
+ 267   1           m = 0 ;
+ 268   1          while(cdis1[m] != '\0')
+ 269   1           {                         //显示字符
+ 270   2             lcd_wdat(cdis1[m]) ;
+ 271   2             m++ ;
+ 272   2           }
+ 273   1      
+ 274   1          lcd_pos(0x40) ;             //设置显示位置为第二行第1个字符
+ 275   1           m = 0 ;
+ 276   1          while(cdis2[m] != '\0')
+ 277   1           {
+ 278   2             lcd_wdat(cdis2[m]) ;      //显示字符
+ 279   2             m++ ;
+ 280   2           }
+ 281   1      
+ 282   1           writetab() ;               //自定义字符写入CGRAM
+ 283   1           delay1(5) ;
+ 284   1           lcd_pos(0x4d) ;
+ 285   1           lcd_wdat(0x00) ;          //显示自定义字符
+ 286   1      }
+ 287          
+ 288          
+ 289          /* DS18B20 ERROR 显示菜单                             */
+ 290          /*******************************************************************/
+ 291          void  Error_Menu ()
+ 292          {
+ 293   1           uchar  m ;
+ 294   1           lcd_init() ;                //初始化LCD 
+ 295   1       
+ 296   1          lcd_pos(0) ;                //设置显示位置为第一行的第1个字符
+ 297   1           m = 0 ;
+ 298   1           while(cdis3[m] != '\0')
+ 299   1           {                         //显示字符
+ 300   2             lcd_wdat(cdis3[m]) ;
+ 301   2             m++ ;
+ 302   2           }
+ 303   1      
+C51 COMPILER V8.18   16021602                                                              12/09/2009 22:02:05 PAGE 6   
+
+ 304   1           lcd_pos(0x40) ;             //设置显示位置为第二行第1个字符
+ 305   1           m = 0 ;
+ 306   1           while(cdis4[m] != '\0')
+ 307   1           {
+ 308   2             lcd_wdat(cdis4[m]) ;      //显示字符
+ 309   2             m++ ;
+ 310   2           }
+ 311   1      }
+ 312          
+ 313          
+ 314          /* 主函数     */
+ 315          /************************************/
+ 316          void main()
+ 317           {
+ 318   1           Ok_Menu () ;
+ 319   1      
+ 320   1       do
+ 321   1        {
+ 322   2          Read_Temperature() ; //读取温度
+ 323   2         Disp_Temperature() ;  //显示温度
+ 324   2           }
+ 325   1          while(!presence)  ;
+ 326   1      
+ 327   1           Error_Menu () ;
+ 328   1      
+ 329   1       do
+ 330   1        {  
+ 331   2          Init_DS18B20() ;
+ 332   2          beep() ;
+ 333   2           }
+ 334   1       while(presence) ;
+ 335   1      }
+ 336          
+*** WARNING C290 IN LINE 195 OF 16021602.C: missing return value
+*** WARNING C290 IN LINE 212 OF 16021602.C: missing return value
+*** WARNING C290 IN LINE 242 OF 16021602.C: missing return value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    622    ----
+   CONSTANT SIZE    =     93    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  3 WARNING(S),  0 ERROR(S)

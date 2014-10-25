@@ -1,0 +1,23 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+D:\新建文件夹 (2)\RZ-51V20 配套软件及资料\RZ-51V20 实例程序\21-超声波测距实验\超声波测距数码管显示\csb.uv2
+Project File Date:  01/04/2010
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 超声波显示.C...
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PAI_XU?超蒧波显示
+Program Size: data=32.1 xdata=0 code=580
+creating hex file from "csb"...
+"csb" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling 超声波显示.C...
+linking...
+Program Size: data=32.1 xdata=0 code=594
+creating hex file from "csb"...
+"csb" - 0 Error(s), 0 Warning(s).

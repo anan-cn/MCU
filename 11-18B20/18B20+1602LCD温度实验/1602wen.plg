@@ -1,0 +1,27 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+D:\RZ-51\实验板配套实例程序\18B20\18B20+1602LCD温度实验\1602wen.uv2
+Project File Date:  07/24/2009
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 16021602.c...
+16021602.C(195): warning C290: missing return value
+16021602.C(212): warning C290: missing return value
+16021602.C(242): warning C290: missing return value
+linking...
+Program Size: data=16.2 xdata=0 code=870
+creating hex file from "1602wen"...
+"1602wen" - 0 Error(s), 3 Warning(s).
+Build target 'Target 1'
+compiling 16021602.c...
+16021602.C(195): warning C290: missing return value
+16021602.C(212): warning C290: missing return value
+16021602.C(242): warning C290: missing return value
+linking...
+Program Size: data=16.2 xdata=0 code=870
+creating hex file from "1602wen"...
+"1602wen" - 0 Error(s), 3 Warning(s).

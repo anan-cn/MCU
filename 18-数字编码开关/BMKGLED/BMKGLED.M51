@@ -1,0 +1,245 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        12/31/2009  09:55:33  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE BMKGLED.obj TO BMKGLED RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  BMKGLED.obj (BMKGLED)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  BMKGLED (BMKGLED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?BMKGLED
+                    000AH     0016H                  *** GAP ***
+            BIT     0020H.0   0000H.3   UNIT         ?BI?BMKGLED
+                    0020H.3   0000H.5                *** GAP ***
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0007H     UNIT         ?PR?_DELAY?BMKGLED
+                    000AH     0001H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     0006H     UNIT         ?PR?TIMER1?BMKGLED
+            CODE    0014H     0006H     UNIT         ?C_INITSEG
+                    001AH     0001H                  *** GAP ***
+            CODE    001BH     0003H     ABSOLUTE     
+            CODE    001EH     008CH     UNIT         ?C_C51STARTUP
+            CODE    00AAH     004EH     UNIT         ?PR?MAIN?BMKGLED
+            CODE    00F8H     0037H     UNIT         ?PR?SCAN_ENCODER?BMKGLED
+            CODE    012FH     0014H     UNIT         ?PR?BEEP?BMKGLED
+            CODE    0143H     0012H     UNIT         ?PR?_DELAYMS?BMKGLED
+            CODE    0155H     0011H     UNIT         ?PR?TIMER0?BMKGLED
+
+
+
+OVERLAY MAP OF MODULE:   BMKGLED (BMKGLED)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?BMKGLED
+  +--> ?C_INITSEG
+
+?PR?MAIN?BMKGLED
+  +--> ?PR?SCAN_ENCODER?BMKGLED
+  +--> ?PR?BEEP?BMKGLED
+BL51 BANKED LINKER/LOCATER V6.00                                                      12/31/2009  09:55:33  PAGE 2
+
+
+
+?PR?BEEP?BMKGLED
+  +--> ?PR?_DELAY?BMKGLED
+  +--> ?PR?_DELAYMS?BMKGLED
+
+
+
+SYMBOL TABLE OF MODULE:  BMKGLED (BMKGLED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        BMKGLED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  B:00B0H.6       PUBLIC        BEEP
+  C:00AAH         PUBLIC        main
+  B:0090H.4       PUBLIC        PINA
+  B:0090H.5       PUBLIC        PINB
+  B:0090H.6       PUBLIC        PIND
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  D:0008H         PUBLIC        direction
+  B:00A8H.1       PUBLIC        ET0
+  B:00A8H.3       PUBLIC        ET1
+  D:008CH         PUBLIC        TH0
+  D:008DH         PUBLIC        TH1
+  D:008AH         PUBLIC        TL0
+  D:008BH         PUBLIC        TL1
+  C:0143H         PUBLIC        _delayms
+  C:0155H         PUBLIC        timer0
+  C:000EH         PUBLIC        timer1
+  B:0088H.4       PUBLIC        TR0
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  C:00F8H         PUBLIC        scan_encoder
+  C:0003H         PUBLIC        _delay
+  D:0009H         PUBLIC        PWM
+  D:00D0H         PUBLIC        PSW
+  C:012FH         PUBLIC        Beep
+  -------         PROC          _DELAYMS
+  D:0007H         SYMBOL        ms
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0143H         LINE#         17
+  C:0143H         LINE#         18
+  C:0143H         LINE#         20
+  C:0149H         LINE#         21
+  C:0149H         LINE#         22
+  C:0154H         LINE#         23
+BL51 BANKED LINKER/LOCATER V6.00                                                      12/31/2009  09:55:33  PAGE 3
+
+
+  C:0154H         LINE#         24
+  -------         ENDPROC       _DELAYMS
+  -------         PROC          _DELAY
+  D:0007H         SYMBOL        t
+  C:0003H         LINE#         31
+  C:0003H         LINE#         32
+  C:0003H         LINE#         33
+  C:0009H         LINE#         34
+  -------         ENDPROC       _DELAY
+  -------         PROC          BEEP
+  -------         DO            
+  D:0005H         SYMBOL        i
+  -------         ENDDO         
+  C:012FH         LINE#         41
+  C:012FH         LINE#         42
+  C:012FH         LINE#         44
+  C:0131H         LINE#         45
+  C:0131H         LINE#         46
+  C:0136H         LINE#         47
+  C:0138H         LINE#         48
+  C:013CH         LINE#         49
+  C:013EH         LINE#         50
+  -------         ENDPROC       BEEP
+  -------         PROC          SCAN_ENCODER
+  -------         DO            
+  B:0020H.0       SYMBOL        Curr_encoder_b
+  B:0020H.1       SYMBOL        Last_encoder_b
+  B:0020H.2       SYMBOL        updata
+  -------         ENDDO         
+  C:00F8H         LINE#         62
+  C:00F8H         LINE#         63
+  C:00F8H         LINE#         68
+  C:00FEH         LINE#         69
+  C:00FEH         LINE#         70
+  C:0101H         LINE#         72
+  C:0101H         LINE#         74
+  C:0105H         LINE#         76
+  C:0108H         LINE#         77
+  C:0108H         LINE#         78
+  C:010CH         LINE#         79
+  C:010EH         LINE#         80
+  C:0111H         LINE#         81
+  C:0111H         LINE#         82
+  C:0114H         LINE#         83
+  C:0114H         LINE#         84
+  C:0116H         LINE#         86
+  C:0119H         LINE#         87
+  C:0119H         LINE#         88
+  C:011BH         LINE#         89
+  C:0121H         LINE#         90
+  C:0121H         LINE#         91
+  C:0124H         LINE#         92
+  C:0125H         LINE#         93
+  C:012BH         LINE#         94
+  C:012BH         LINE#         95
+  C:012EH         LINE#         96
+  C:012EH         LINE#         97
+BL51 BANKED LINKER/LOCATER V6.00                                                      12/31/2009  09:55:33  PAGE 4
+
+
+  C:012EH         LINE#         98
+  -------         ENDPROC       SCAN_ENCODER
+  -------         PROC          MAIN
+  C:00AAH         LINE#         105
+  C:00AAH         LINE#         106
+  C:00AAH         LINE#         107
+  C:00ADH         LINE#         108
+  C:00B0H         LINE#         109
+  C:00B3H         LINE#         110
+  C:00B6H         LINE#         112
+  C:00B9H         LINE#         113
+  C:00BCH         LINE#         114
+  C:00BEH         LINE#         115
+  C:00C0H         LINE#         116
+  C:00C2H         LINE#         117
+  C:00C4H         LINE#         119
+  C:00C4H         LINE#         120
+  C:00C4H         LINE#         121
+  C:00C7H         LINE#         123
+  C:00CCH         LINE#         124
+  C:00CCH         LINE#         125
+  C:00D2H         LINE#         126
+  C:00D6H         LINE#         128
+  C:00D9H         LINE#         129
+  C:00DCH         LINE#         130
+  C:00DCH         LINE#         132
+  C:00E1H         LINE#         133
+  C:00E1H         LINE#         134
+  C:00E6H         LINE#         135
+  C:00EAH         LINE#         137
+  C:00EDH         LINE#         138
+  C:00F0H         LINE#         139
+  C:00F0H         LINE#         141
+  C:00F3H         LINE#         142
+  C:00F3H         LINE#         143
+  C:00F6H         LINE#         144
+  C:00F6H         LINE#         145
+  -------         ENDPROC       MAIN
+  -------         PROC          TIMER0
+  C:0155H         LINE#         153
+  C:0155H         LINE#         155
+  C:0157H         LINE#         156
+  C:015AH         LINE#         157
+  C:015DH         LINE#         158
+  C:0160H         LINE#         159
+  C:0162H         LINE#         160
+  C:0165H         LINE#         161
+  -------         ENDPROC       TIMER0
+  -------         PROC          TIMER1
+  C:000EH         LINE#         168
+  C:000EH         LINE#         170
+  C:0010H         LINE#         171
+  C:0013H         LINE#         172
+  -------         ENDPROC       TIMER1
+  -------         ENDMOD        BMKGLED
+
+Program Size: data=11.3 xdata=0 code=356
+BL51 BANKED LINKER/LOCATER V6.00                                                      12/31/2009  09:55:33  PAGE 5
+
+
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

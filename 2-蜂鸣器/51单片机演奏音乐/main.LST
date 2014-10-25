@@ -1,0 +1,115 @@
+C51 COMPILER V8.02   MAIN                                                                  07/22/2009 13:49:18 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          /*************************************************************
+   2          程序功能：51单片机演奏单音乐曲
+   3          硬件接法：P0.0控制交流蜂鸣器，发声频率等于P0.0的方波振荡频率
+   4          **************************************************************/
+   5          #include "REG52.H"   //包含所选单片机的定义头文件
+   6          sbit SPEAKER = P3^6;     //定义音乐输出口
+   7          
+   8          typedef struct                  //定义音符结构
+   9          {       unsigned int mFreq;     //发声频率（对应的定时器初值）
+  10                  unsigned int mDelay;    //发声时值
+  11          }CNote;
+  12          unsigned char ReloadH;         //定义定时器T1重装值
+  13          unsigned char ReloadL;
+  14          /************************************************************
+  15          函数：T1_ISR()
+  16          功能：定时器T1中断服务函数，产生音乐振荡频率
+  17          *************************************************************/
+  18          void T1_ISR() interrupt 3
+  19          {       TR1 = 0;
+  20   1              TH1 = ReloadH;
+  21   1              TL1 = ReloadL;
+  22   1              TR1 = 1;
+  23   1              SPEAKER = !SPEAKER;  //音乐声频的半个波
+  24   1      }
+  25          /*************************************************************
+  26          函数：Delay()
+  27          功能：延时0.001～65.536s
+  28          参数：t>0时，延时(t*0.001)s
+  29                t=0时，延时65.536s
+  30          *************************************************************/
+  31          void Delay(unsigned int t)
+  32          {       do
+  33   1              {       TH0 = 0xFC;                     //定时器赋初值，定时1ms
+  34   2                      TL0 = 0x66+17;
+  35   2                      TR0 = 1;                        //启动定时器
+  36   2                      while ( !TF0 );         //等待定时器溢出
+  37   2                      TR0 = 0;                        //关闭定时器
+  38   2                      TF0 = 0;                        //清除溢出标志
+  39   2              } while ( --t != 0 );   //循环t次
+  40   1      }
+  41          /***********************************************************
+  42          函数：Sound()
+  43          功能：演奏一个音符
+  44          参数：*note，音符指针，指向要演奏的音符
+  45          ***********************************************************/
+  46          void Sound(CNote *note)
+  47          {            //利用定时器T1发出音符的频率
+  48   1              if ( note->mFreq != 0 )
+  49   1              {       ReloadH = (unsigned char)(note->mFreq >> 8);
+  50   2                      ReloadL = (unsigned char)(note->mFreq);
+  51   2                      TH1 = 0xFF;
+  52   2                      TL1 = 0xF0;
+  53   2                      TR1 = 1;
+  54   2              }
+  55   1              Delay(note->mDelay);   //发声延时
+C51 COMPILER V8.02   MAIN                                                                  07/22/2009 13:49:18 PAGE 2   
+
+  56   1              TR1 = 0;               //停止发声
+  57   1              TF1 = 0;
+  58   1              SPEAKER = 1;
+  59   1              Delay(5);       
+  60   1      }
+  61          /************************************************************
+  62          函数：Play()
+  63          功能：演奏一段乐曲
+  64          参数：music[]，要演奏的乐曲
+  65          *************************************************************/
+  66          void Play(CNote music[])
+  67          {       unsigned int n = 0;
+  68   1              for (;;)
+  69   1              {       if ( music[n].mDelay == 0 ) break;
+  70   2                      Sound(&(music[n]));
+  71   2                      n++;
+  72   2              }
+  73   1      }
+  74          
+  75          #include "MusicTab.h"   //包含乐曲头文件
+  76          void main()     //主程序
+  77          {
+  78   1              TMOD = 0x11;    //设定时器
+  79   1              ET1 = 1;
+  80   1              EA = 1;
+  81   1              for (;;)
+  82   1              {
+  83   2                Play(MusicTab);       //演奏第一首乐曲
+  84   2                Delay(500);           //等待数秒
+  85   2                Play(MusicTab1);      //演奏第二首乐曲
+  86   2                Delay(500);           //等待数秒，再循环播放
+  87   2      
+  88   2              }
+  89   1      }
+  90          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    187    ----
+   CONSTANT SIZE    =    272    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

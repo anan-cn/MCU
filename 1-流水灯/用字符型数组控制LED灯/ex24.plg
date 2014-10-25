@@ -1,0 +1,18 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+F:\新版程序\流水灯\用字符型数组控制LED灯\ex24.uv2
+Project File Date:  06/24/2009
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling ex24.c...
+linking...
+Program Size: data=9.0 xdata=0 code=54
+creating hex file from "ex24"...
+"ex24" - 0 Error(s), 0 Warning(s).
+</pre>
+</body>
+</html>

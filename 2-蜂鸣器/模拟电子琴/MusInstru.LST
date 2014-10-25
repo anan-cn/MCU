@@ -1,0 +1,172 @@
+C51 COMPILER V8.02   MUSINSTRU                                                             07/13/2009 21:52:45 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE MUSINSTRU
+OBJECT MODULE PLACED IN MusInstru.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE MusInstru.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          #include "MusInstru.h"
+   3          
+   4          /* 键消抖延时函数 */
+   5          void delay(void)
+   6          {
+   7   1              uchar i;
+   8   1              for (i=300;i>0;i--);
+   9   1      }
+  10          
+  11          /* 键扫描函数 */
+  12          uchar getkey(void)
+  13          {
+  14   1              uchar scancode,tmpcode;
+  15   1      
+  16   1              if ((P1&0xf0)==0xf0)                    
+  17   1                      return(0);
+  18   1      
+  19   1              scancode = 0xfe;
+  20   1              while((scancode&0x10)!=0)               // 逐行扫描
+  21   1              {
+  22   2                      P1 = scancode;                          // 输出行扫描码
+  23   2                      if ((P1&0xf0)!=0xf0)            // 本行有键按下
+  24   2                      {
+  25   3                              tmpcode = (P1&0xf0)|0x0f;
+  26   3      
+  27   3                              /* 返回特征字节码，为1的位即对应于行和列 */
+  28   3                              return((~scancode)+(~tmpcode));
+  29   3                      }
+  30   2                      else scancode = (scancode<<1)|0x01;             // 行扫描码左移一位
+  31   2              }
+  32   1      }
+  33          
+  34          /* 定时器0中断服务子程序 */
+  35          void time0_int(void) interrupt 1 using 0
+  36          {
+  37   1              /* 设置计数初值 */
+  38   1              TH0 = STH0;
+  39   1              TL0 = STL0; 
+  40   1              P36=~P36;                                                       // 反相，产生输出脉冲
+  41   1      }
+  42          
+  43          /* 主程序 */
+  44          void main()
+  45          {
+  46   1              uchar key,k;
+  47   1      
+  48   1              TMOD = 0x01;                                                    // T0，工作方式1
+  49   1      
+  50   1              ET0 = 1;
+  51   1              EA = 1;
+  52   1      
+  53   1              while(1)
+  54   1          {
+  55   2                      P1 = 0xf0;                                                              // 发全0行扫描码
+C51 COMPILER V8.02   MUSINSTRU                                                             07/13/2009 21:52:45 PAGE 2   
+
+  56   2                      if ((P1&0xf0)!=0xf0)                                    // 若有键按下
+  57   2                      {
+  58   3                              delay();                                                        // 延时去抖动
+  59   3                              if ((P1&0xf0)!=0xf0)                            // 延时后再判断一次，去除抖动影响
+  60   3                              {
+  61   4                                      key = getkey();                                 // 调用键盘扫描函数
+  62   4      
+  63   4                                      // 根据获取的按键位置得到k值
+  64   4                                      switch(key)
+  65   4                                      {
+  66   5                                      case 0x11:                                              // 1行1列
+  67   5                                                      k = 0;
+  68   5                                                      break;
+  69   5                                              case 0x21:                                              // 1行2列
+  70   5                                                      k = 1;
+  71   5                                                      break;                  
+  72   5                                              case 0x41:                                              // 1行3列
+  73   5                                                      k = 2;
+  74   5                                                      break;
+  75   5                                      case 0x81:                                              // 1行4列
+  76   5                                                      k = 3;
+  77   5                                                      break;
+  78   5                                              case 0x12:                                              // 2行1列
+  79   5                                                      k = 4;
+  80   5                                                      break;
+  81   5                                              case 0x22:                                              // 2行2列
+  82   5                                                      k = 5;
+  83   5                                                      break;
+  84   5                                              case 0x42:                                              // 2行3列
+  85   5                                                      k = 6;
+  86   5                                                      break;
+  87   5                                              case 0x82:                                              // 2行4列
+  88   5                                                      k = 7;
+  89   5                                                      break;
+  90   5                                              case 0x14:                                              // 3行1列
+  91   5                                                      k = 8;
+  92   5                                                      break;
+  93   5                                              case 0x24:                                              // 3行2列
+  94   5                                                      k = 9;
+  95   5                                                      break;
+  96   5                                              case 0x44:                                              // 3行3列
+  97   5                                                      k = 10;
+  98   5                                                      break;
+  99   5                                              case 0x84:                                              // 3行4列
+ 100   5                                                      k = 11;
+ 101   5                                                      break;
+ 102   5                                              case 0x18:                                              // 3行4列
+ 103   5                                                      k = 12;
+ 104   5                                                      break;
+ 105   5                                              case 0x28:                                              // 3行4列
+ 106   5                                                      k = 13;
+ 107   5                                                      break;
+ 108   5                                              case 0x48:                                              // 3行4列
+ 109   5                                                      k = 14;
+ 110   5                                                      break;
+ 111   5                                              case 0x88:                                              // 3行4列
+ 112   5                                                      k = 15;
+ 113   5                                                      break;
+ 114   5                                              default:        
+ 115   5                                                      break;
+ 116   5                                      }       
+ 117   4      
+C51 COMPILER V8.02   MUSINSTRU                                                             07/13/2009 21:52:45 PAGE 3   
+
+ 118   4                                      P36 = ~P36;                                             // 反相
+ 119   4                      
+ 120   4                                      /* 根据所得的k值设定计数器1的计数初值 */
+ 121   4                          STH0 = tab[k]/256;
+ 122   4                          STL0 = tab[k]%256; 
+ 123   4      
+ 124   4                              TR0 = 1;                                                        // 开始计数 
+ 125   4      
+ 126   4                                      P1 = 0xf0;                                                      // 发全0行扫描码
+ 127   4                                      while ((P1&0xf0)!=0xf0)                         // 若没有松开按键
+ 128   4                                      {
+ 129   5                                              P1 = 0xf0;      
+ 130   5                                      }
+ 131   4      
+ 132   4                                      TR1 = 0;                                                        // 若按键松开，则停止计数，不产生脉冲输出
+ 133   4                              }
+ 134   3                      }
+ 135   2              }    
+ 136   1      }
+ 137          
+ 138            
+ 139          
+ 140          
+ 141            
+ 142          
+ 143          
+ 144          
+ 145          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    280    ----
+   CONSTANT SIZE    =     32    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

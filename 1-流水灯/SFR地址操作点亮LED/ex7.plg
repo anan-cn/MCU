@@ -1,0 +1,21 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+F:\新版程序\流水灯\SFR地址操作点亮LED\ex7.uv2
+Project File Date:  05/16/2009
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling ex7.c...
+linking...
+Program Size: data=9.0 xdata=0 code=78
+creating hex file from "ex7"...
+"ex7" - 0 Error(s), 0 Warning(s).
+Build target 'Target 1'
+compiling ex7.c...
+linking...
+Program Size: data=9.0 xdata=0 code=78
+creating hex file from "ex7"...
+"ex7" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,23 @@
+<html>
+<body>
+<pre>
+<h1>礦ision3 Build Log</h1>
+<h2>Project:</h2>
+D:\光盘\RZ-51V20\RZ-51V20 实例程序\11-12864不带字库\液晶显示\实验项目.uv2
+Project File Date:  12/16/2009
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling 液晶显示.c...
+液晶显示.C(83): warning C290: missing return value
+linking...
+Program Size: data=19.0 xdata=0 code=1052
+creating hex file from "实验项目"...
+"实验项目" - 0 Error(s), 1 Warning(s).
+Build target 'Target 1'
+compiling 液晶显示.c...
+液晶显示.C(83): warning C290: missing return value
+linking...
+Program Size: data=19.0 xdata=0 code=1052
+creating hex file from "实验项目"...
+"实验项目" - 0 Error(s), 1 Warning(s).

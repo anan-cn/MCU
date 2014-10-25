@@ -1,0 +1,59 @@
+C51 COMPILER V8.02   EX28                                                                  06/24/2009 15:54:07 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE EX28
+OBJECT MODULE PLACED IN ex28.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ex28.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //实例28：用数组的指针控制P0 口8 位LED流水点亮
+   2          #include<reg51.h>
+   3          /*************************************************
+   4          函数功能：延时约150ms (3*200*250=150 000μs=150ms
+   5          *************************************************/
+   6          void delay150ms(void)
+   7          {
+   8   1        unsigned char m,n;
+   9   1        for(m=0;m<200;m++)
+  10   1          for(n=0;n<250;n++)
+  11   1                 ;
+  12   1      }
+  13          /*************************************************
+  14          函数功能：主函数
+  15          *************************************************/
+  16          void main(void)
+  17          {  
+  18   1        unsigned char i;     
+  19   1        unsigned char Tab[ ]={0xFF,0xFE,0xFD,0xFB,0xF7,0xEF,0xDF,0xBF,
+  20   1                              0x7F,0xBF,0xDF,0xEF,0xF7,0xFB,0xFD,0xFE,
+  21   1                                                                 0xFE,0xFC,0xF8,0xF0,0xE0,0xC0,0x80,0x00,
+  22   1                                                            0xE7,0xDB,0xBD,0x7E,0x3C,0x18,0x00,0x81,
+  23   1                                                                      0xC3,0xE7,0x7E,0xBD,0xDB,0xE7,0xBD,0xDB};
+  24   1                                                                      //流水灯控制码
+  25   1        unsigned char *p;   //定义无符号字符型指针
+  26   1        p=Tab;              //将数组首地址存入指针p
+  27   1        while(1)
+  28   1          {
+  29   2                 for(i=0;i<32;i++) //共32个流水灯控制码
+  30   2                       {
+  31   3                         P0=*(p+i);     //*（p+i)的值等于a[i]
+  32   3                              delay150ms();  //调用150ms延时函数
+  33   3                              delay150ms();  //调用150ms延时函数
+  34   3                       }
+  35   2               }
+  36   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     71    ----
+   CONSTANT SIZE    =     40    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      43
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

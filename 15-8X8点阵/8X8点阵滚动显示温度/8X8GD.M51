@@ -1,0 +1,333 @@
+BL51 BANKED LINKER/LOCATER V6.20                                                        01/04/2010  17:10:51  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.20, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE 8X8GD.obj TO 8X8GD RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  8X8GD.obj (8X8GD)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  8X8GD (8X8GD)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+                    0008H     0018H                  *** GAP ***
+            BIT     0020H.0   0000H.1   UNIT         _BIT_GROUP_
+                    0020H.1   0000H.7                *** GAP ***
+            DATA    0021H     0045H     UNIT         ?DT?8X8GD
+            IDATA   0066H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0005H     UNIT         ?PR?PAR_OUT?8X8GD
+                    0008H     0003H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     00E2H     UNIT         ?PR?MAIN?8X8GD
+            CODE    00F0H     00B0H     UNIT         ?CO?8X8GD
+            CODE    01A0H     008CH     UNIT         ?C_C51STARTUP
+            CODE    022CH     0053H     UNIT         ?PR?DISPLAY?8X8GD
+            CODE    027FH     003CH     UNIT         ?C_INITSEG
+            CODE    02BBH     0035H     UNIT         ?PR?INIT_DS18B20?8X8GD
+            CODE    02F0H     0034H     UNIT         ?PR?_WRITEONECHAR?8X8GD
+            CODE    0324H     002FH     UNIT         ?PR?READONECHAR?8X8GD
+            CODE    0353H     0024H     UNIT         ?PR?READYREADTEMP?8X8GD
+            CODE    0377H     001DH     UNIT         ?PR?T0_INTSERVICE?8X8GD
+            CODE    0394H     0013H     UNIT         ?PR?_SER_IN?8X8GD
+            CODE    03A7H     0010H     UNIT         ?PR?T_INIT?8X8GD
+
+
+
+OVERLAY MAP OF MODULE:   8X8GD (8X8GD)
+
+
+SEGMENT                            BIT_GROUP 
+  +--> CALLED SEGMENT           START    LENGTH
+-----------------------------------------------
+?PR?T0_INTSERVICE?8X8GD         -----    -----
+  +--> ?PR?DISPLAY?8X8GD
+
+?PR?DISPLAY?8X8GD               -----    -----
+  +--> ?CO?8X8GD
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  17:10:51  PAGE 2
+
+
+  +--> ?PR?_SER_IN?8X8GD
+  +--> ?PR?PAR_OUT?8X8GD
+
+*** NEW ROOT ***************************************************
+
+?C_C51STARTUP                   -----    -----
+  +--> ?PR?MAIN?8X8GD
+  +--> ?C_INITSEG
+
+?PR?MAIN?8X8GD                  -----    -----
+  +--> ?PR?T_INIT?8X8GD
+  +--> ?PR?READYREADTEMP?8X8GD
+  +--> ?PR?READONECHAR?8X8GD
+  +--> ?CO?8X8GD
+
+?PR?READYREADTEMP?8X8GD         -----    -----
+  +--> ?PR?INIT_DS18B20?8X8GD
+  +--> ?PR?_WRITEONECHAR?8X8GD
+
+?PR?INIT_DS18B20?8X8GD          0020H.0  0000H.1
+
+
+
+SYMBOL TABLE OF MODULE:  8X8GD (8X8GD)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        8X8GD
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  B:0090H.6       PUBLIC        SH_CK
+  D:00A8H         PUBLIC        IE
+  C:0353H         PUBLIC        ReadyReadTemp
+  B:00B0H.3       PUBLIC        DQ
+  B:0090H.5       PUBLIC        ST_CK
+  B:0090H.4       PUBLIC        SD
+  D:00B8H         PUBLIC        IP
+  D:0021H         PUBLIC        flag
+  C:02BBH         PUBLIC        Init_DS18B20
+  C:0324H         PUBLIC        ReadOneChar
+  C:0394H         PUBLIC        _Ser_IN
+  D:0022H         PUBLIC        buff
+  D:005AH         PUBLIC        t1
+  D:005BH         PUBLIC        t2
+  C:000EH         PUBLIC        main
+  D:005CH         PUBLIC        t3
+  C:0377H         PUBLIC        T0_intservice
+  D:005DH         PUBLIC        t4
+  D:005EH         PUBLIC        time
+  C:02F0H         PUBLIC        _WriteOneChar
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:0148H         PUBLIC        table1
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  17:10:51  PAGE 3
+
+
+  C:00F8H         PUBLIC        table2
+  C:00F0H         PUBLIC        aa
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  C:022CH         PUBLIC        Display
+  D:00C8H         PUBLIC        T2CON
+  D:005FH         PUBLIC        i
+  C:03A7H         PUBLIC        T_init
+  D:0060H         PUBLIC        m
+  D:0062H         PUBLIC        n
+  D:0064H         PUBLIC        t
+  D:0065H         PUBLIC        w
+  D:00D0H         PUBLIC        PSW
+  C:0003H         PUBLIC        Par_OUT
+  -------         PROC          _SER_IN
+  D:0007H         SYMBOL        Data
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:0394H         LINE#         39
+  C:0394H         LINE#         40
+  C:0394H         LINE#         42
+  C:0396H         LINE#         43
+  C:0396H         LINE#         44
+  C:0398H         LINE#         45
+  C:039CH         LINE#         46
+  C:03A0H         LINE#         47
+  C:03A2H         LINE#         48
+  C:03A6H         LINE#         49
+  -------         ENDPROC       _SER_IN
+  -------         PROC          PAR_OUT
+  C:0003H         LINE#         55
+  C:0003H         LINE#         56
+  C:0003H         LINE#         57
+  C:0005H         LINE#         58
+  C:0007H         LINE#         59
+  -------         ENDPROC       PAR_OUT
+  -------         PROC          INIT_DS18B20
+  -------         DO            
+  B:0020H.0       SYMBOL        flag
+  -------         ENDDO         
+  C:02BBH         LINE#         71
+  C:02BBH         LINE#         72
+  C:02BBH         LINE#         74
+  C:02BDH         LINE#         75
+  C:02C7H         LINE#         77
+  C:02C9H         LINE#         78
+  C:02D3H         LINE#         80
+  C:02D5H         LINE#         81
+  C:02DFH         LINE#         83
+  C:02E3H         LINE#         84
+  C:02EDH         LINE#         86
+  C:02EFH         LINE#         87
+  -------         ENDPROC       INIT_DS18B20
+  -------         PROC          READONECHAR
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  17:10:51  PAGE 4
+
+
+  -------         DO            
+  D:0006H         SYMBOL        i
+  D:0007H         SYMBOL        dat
+  -------         ENDDO         
+  C:0324H         LINE#         92
+  C:0324H         LINE#         93
+  C:0324H         LINE#         94
+  C:0326H         LINE#         96
+  C:0326H         LINE#         97
+  C:0326H         LINE#         99
+  C:0328H         LINE#         100
+  C:0329H         LINE#         101
+  C:032BH         LINE#         102
+  C:032FH         LINE#         103
+  C:0330H         LINE#         104
+  C:0332H         LINE#         105
+  C:033CH         LINE#         107
+  C:033FH         LINE#         108
+  C:0344H         LINE#         110
+  C:0344H         LINE#         112
+  C:034EH         LINE#         114
+  C:0352H         LINE#         115
+  C:0352H         LINE#         116
+  -------         ENDPROC       READONECHAR
+  -------         PROC          _WRITEONECHAR
+  D:0007H         SYMBOL        dat
+  -------         DO            
+  D:0006H         SYMBOL        i
+  -------         ENDDO         
+  C:02F0H         LINE#         121
+  C:02F0H         LINE#         122
+  C:02F0H         LINE#         123
+  C:02F2H         LINE#         124
+  C:02F2H         LINE#         125
+  C:02F2H         LINE#         126
+  C:02F4H         LINE#         127
+  C:02F5H         LINE#         128
+  C:02F7H         LINE#         129
+  C:02FBH         LINE#         131
+  C:0305H         LINE#         133
+  C:0307H         LINE#         134
+  C:0311H         LINE#         136
+  C:0315H         LINE#         137
+  C:0319H         LINE#         138
+  C:0323H         LINE#         140
+  -------         ENDPROC       _WRITEONECHAR
+  -------         PROC          READYREADTEMP
+  C:0353H         LINE#         142
+  C:0353H         LINE#         143
+  C:0353H         LINE#         144
+  C:0356H         LINE#         145
+  C:035BH         LINE#         146
+  C:0360H         LINE#         147
+  C:036AH         LINE#         149
+  C:036DH         LINE#         150
+  C:0372H         LINE#         151
+  -------         ENDPROC       READYREADTEMP
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  17:10:51  PAGE 5
+
+
+  -------         PROC          DISPLAY
+  C:022CH         LINE#         156
+  C:022CH         LINE#         158
+  C:022CH         LINE#         159
+  C:0232H         LINE#         160
+  C:023CH         LINE#         161
+  C:0248H         LINE#         162
+  C:024BH         LINE#         163
+  C:0255H         LINE#         164
+  C:026FH         LINE#         165
+  C:0277H         LINE#         166
+  C:0277H         LINE#         167
+  C:027BH         LINE#         168
+  C:027EH         LINE#         169
+  C:027EH         LINE#         170
+  C:027EH         LINE#         172
+  -------         ENDPROC       DISPLAY
+  -------         PROC          T_INIT
+  C:03A7H         LINE#         176
+  C:03A7H         LINE#         177
+  C:03A7H         LINE#         178
+  C:03AAH         LINE#         179
+  C:03ADH         LINE#         180
+  C:03B0H         LINE#         181
+  C:03B2H         LINE#         182
+  C:03B4H         LINE#         183
+  C:03B6H         LINE#         185
+  -------         ENDPROC       T_INIT
+  -------         PROC          T0_INTSERVICE
+  C:0377H         LINE#         190
+  C:0382H         LINE#         192
+  C:0385H         LINE#         193
+  C:0388H         LINE#         194
+  C:038BH         LINE#         195
+  -------         ENDPROC       T0_INTSERVICE
+  -------         PROC          MAIN
+  -------         DO            
+  D:0005H         SYMBOL        TL
+  D:0007H         SYMBOL        TH
+  D:0004H         SYMBOL        TN
+  D:0007H         SYMBOL        TD
+  -------         ENDDO         
+  C:000EH         LINE#         200
+  C:000EH         LINE#         201
+  C:000EH         LINE#         207
+  C:0011H         LINE#         209
+  C:0014H         LINE#         210
+  C:0014H         LINE#         211
+  C:001AH         LINE#         212
+  C:001DH         LINE#         213
+  C:0022H         LINE#         214
+  C:0025H         LINE#         215
+  C:0030H         LINE#         217
+  C:0045H         LINE#         218
+  C:004CH         LINE#         219
+  C:0059H         LINE#         220
+  C:0061H         LINE#         221
+BL51 BANKED LINKER/LOCATER V6.20                                                      01/04/2010  17:10:51  PAGE 6
+
+
+  C:0063H         LINE#         222
+  C:0066H         LINE#         223
+  C:0066H         LINE#         225
+  C:006AH         LINE#         226
+  C:0074H         LINE#         227
+  C:0079H         LINE#         229
+  C:007CH         LINE#         230
+  C:007CH         LINE#         231
+  C:007FH         LINE#         232
+  C:008FH         LINE#         233
+  C:008FH         LINE#         234
+  C:0094H         LINE#         235
+  C:0096H         LINE#         236
+  C:0096H         LINE#         237
+  C:009BH         LINE#         238
+  C:009DH         LINE#         239
+  C:009DH         LINE#         240
+  C:00B6H         LINE#         241
+  C:00B8H         LINE#         242
+  C:00B8H         LINE#         243
+  C:00E3H         LINE#         244
+  C:00E3H         LINE#         246
+  C:00E3H         LINE#         247
+  C:00EBH         LINE#         248
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        8X8GD
+
+Program Size: data=78.1 xdata=0 code=948
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

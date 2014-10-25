@@ -1,0 +1,229 @@
+BL51 BANKED LINKER/LOCATER V6.00                                                        07/13/2009  21:52:45  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.00, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE MusInstru.obj TO MusInstruPro RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  MusInstru.obj (MUSINSTRU)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CCASE)
+
+
+LINK MAP OF MODULE:  MusInstruPro (MUSINSTRU)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         ?DT?MUSINSTRU
+            DATA    000AH     0001H     UNIT         _DATA_GROUP_
+            IDATA   000BH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0005H     UNIT         ?PR?DELAY?MUSINSTRU
+                    0008H     0003H                  *** GAP ***
+            CODE    000BH     0003H     ABSOLUTE     
+            CODE    000EH     00D9H     UNIT         ?PR?MAIN?MUSINSTRU
+            CODE    00E7H     0031H     UNIT         ?PR?GETKEY?MUSINSTRU
+            CODE    0118H     0026H     UNIT         ?C?LIB_CODE
+            CODE    013EH     0020H     UNIT         ?CO?MUSINSTRU
+            CODE    015EH     000CH     UNIT         ?C_C51STARTUP
+            CODE    016AH     0009H     UNIT         ?PR?TIME0_INT?MUSINSTRU
+
+
+
+OVERLAY MAP OF MODULE:   MusInstruPro (MUSINSTRU)
+
+
+SEGMENT                           DATA_GROUP 
+  +--> CALLED SEGMENT           START    LENGTH
+-----------------------------------------------
+?C_C51STARTUP                   -----    -----
+  +--> ?PR?MAIN?MUSINSTRU
+
+?PR?MAIN?MUSINSTRU              000AH    0001H
+  +--> ?PR?DELAY?MUSINSTRU
+  +--> ?PR?GETKEY?MUSINSTRU
+  +--> ?CO?MUSINSTRU
+
+
+
+SYMBOL TABLE OF MODULE:  MusInstruPro (MUSINSTRU)
+
+  VALUE           TYPE          NAME
+BL51 BANKED LINKER/LOCATER V6.00                                                      07/13/2009  21:52:45  PAGE 2
+
+
+  ----------------------------------
+
+  -------         MODULE        MUSINSTRU
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  C:00E7H         PUBLIC        getkey
+  D:00A8H         PUBLIC        IE
+  C:016AH         PUBLIC        time0_int
+  C:0003H         PUBLIC        delay
+  D:00B8H         PUBLIC        IP
+  D:0008H         PUBLIC        STH0
+  D:0009H         PUBLIC        STL0
+  C:000EH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:013EH         PUBLIC        tab
+  B:00B0H.6       PUBLIC        P36
+  B:00A8H.1       PUBLIC        ET0
+  D:008CH         PUBLIC        TH0
+  D:008AH         PUBLIC        TL0
+  B:0088H.4       PUBLIC        TR0
+  B:0088H.6       PUBLIC        TR1
+  D:00C8H         PUBLIC        T2CON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          DELAY
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+  C:0003H         LINE#         5
+  C:0003H         LINE#         6
+  C:0003H         LINE#         8
+  C:0007H         LINE#         9
+  -------         ENDPROC       DELAY
+  -------         PROC          GETKEY
+  -------         DO            
+  D:0007H         SYMBOL        scancode
+  D:0006H         SYMBOL        tmpcode
+  -------         ENDDO         
+  C:00E7H         LINE#         12
+  C:00E7H         LINE#         13
+  C:00E7H         LINE#         16
+  C:00EFH         LINE#         17
+  C:00F2H         LINE#         19
+  C:00F4H         LINE#         20
+  C:00F8H         LINE#         21
+  C:00F8H         LINE#         22
+  C:00FAH         LINE#         23
+  C:0102H         LINE#         24
+  C:0102H         LINE#         25
+  C:0108H         LINE#         28
+  C:010FH         LINE#         29
+  C:010FH         LINE#         30
+  C:0115H         LINE#         31
+  C:0117H         LINE#         32
+BL51 BANKED LINKER/LOCATER V6.00                                                      07/13/2009  21:52:45  PAGE 3
+
+
+  -------         ENDPROC       GETKEY
+  -------         PROC          TIME0_INT
+  C:016AH         LINE#         35
+  C:016AH         LINE#         38
+  C:016DH         LINE#         39
+  C:0170H         LINE#         40
+  C:0172H         LINE#         41
+  -------         ENDPROC       TIME0_INT
+  -------         PROC          MAIN
+  -------         DO            
+  D:0007H         SYMBOL        key
+  D:000AH         SYMBOL        k
+  -------         ENDDO         
+  C:000EH         LINE#         44
+  C:000EH         LINE#         45
+  C:000EH         LINE#         48
+  C:0011H         LINE#         50
+  C:0013H         LINE#         51
+  C:0015H         LINE#         53
+  C:0015H         LINE#         54
+  C:0015H         LINE#         55
+  C:0018H         LINE#         56
+  C:0020H         LINE#         57
+  C:0020H         LINE#         58
+  C:0023H         LINE#         59
+  C:002BH         LINE#         60
+  C:002BH         LINE#         61
+  C:002EH         LINE#         64
+  C:0066H         LINE#         65
+  C:0066H         LINE#         66
+  C:0066H         LINE#         67
+  C:0069H         LINE#         68
+  C:006BH         LINE#         69
+  C:006BH         LINE#         70
+  C:006EH         LINE#         71
+  C:0070H         LINE#         72
+  C:0070H         LINE#         73
+  C:0073H         LINE#         74
+  C:0075H         LINE#         75
+  C:0075H         LINE#         76
+  C:0078H         LINE#         77
+  C:007AH         LINE#         78
+  C:007AH         LINE#         79
+  C:007DH         LINE#         80
+  C:007FH         LINE#         81
+  C:007FH         LINE#         82
+  C:0082H         LINE#         83
+  C:0084H         LINE#         84
+  C:0084H         LINE#         85
+  C:0087H         LINE#         86
+  C:0089H         LINE#         87
+  C:0089H         LINE#         88
+  C:008CH         LINE#         89
+  C:008EH         LINE#         90
+  C:008EH         LINE#         91
+  C:0091H         LINE#         92
+  C:0093H         LINE#         93
+BL51 BANKED LINKER/LOCATER V6.00                                                      07/13/2009  21:52:45  PAGE 4
+
+
+  C:0093H         LINE#         94
+  C:0096H         LINE#         95
+  C:0098H         LINE#         96
+  C:0098H         LINE#         97
+  C:009BH         LINE#         98
+  C:009DH         LINE#         99
+  C:009DH         LINE#         100
+  C:00A0H         LINE#         101
+  C:00A2H         LINE#         102
+  C:00A2H         LINE#         103
+  C:00A5H         LINE#         104
+  C:00A7H         LINE#         105
+  C:00A7H         LINE#         106
+  C:00AAH         LINE#         107
+  C:00ACH         LINE#         108
+  C:00ACH         LINE#         109
+  C:00AFH         LINE#         110
+  C:00B1H         LINE#         111
+  C:00B1H         LINE#         112
+  C:00B4H         LINE#         113
+  C:00B4H         LINE#         114
+  C:00B4H         LINE#         115
+  C:00B4H         LINE#         116
+  C:00B4H         LINE#         118
+  C:00B6H         LINE#         121
+  C:00CDH         LINE#         122
+  C:00D1H         LINE#         124
+  C:00D3H         LINE#         126
+  C:00D5H         LINE#         127
+  C:00DDH         LINE#         128
+  C:00DDH         LINE#         129
+  C:00E0H         LINE#         130
+  C:00E2H         LINE#         132
+  C:00E4H         LINE#         133
+  C:00E4H         LINE#         134
+  C:00E4H         LINE#         135
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MUSINSTRU
+
+  -------         MODULE        ?C?CCASE
+  C:0118H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+Program Size: data=12.0 xdata=0 code=368
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

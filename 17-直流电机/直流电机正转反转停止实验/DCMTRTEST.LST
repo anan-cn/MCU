@@ -1,0 +1,98 @@
+C51 COMPILER V8.02   DCMTRTEST                                                             07/21/2009 18:14:43 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE DCMTRTEST
+OBJECT MODULE PLACED IN DCMTRTEST.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE DCMTRTEST.C BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include<reg52.h>
+   2          sbit Key_UP=P3^2;   //正转按键 对应实验板上的K1
+   3          sbit Key_DOWN=P3^3;//反转按键  对应实验板上的K2
+   4          sbit Key_STOP=P3^4;//停止键    对应实验板上的K3
+   5          sbit ZZ=P1^0;//控制端
+   6          sbit FZ=P1^1;//控制端
+   7          sbit BEEP = P3^6; //蜂鸣器控制端口P36 
+   8          unsigned char KeyV,TempKeyV;                                                       
+   9          void Delay(unsigned int ii)
+  10          {
+  11   1      unsigned int jj;
+  12   1      for(;ii>0;ii--)
+  13   1      for(jj=0;jj<125;jj++)
+  14   1      {;}
+  15   1      }
+  16          /*********************************************************/
+  17          void beep()             //蜂鸣器响一声函数
+  18          {
+  19   1        unsigned char i;
+  20   1        for (i=0;i<100;i++)
+  21   1         {
+  22   2         Delay(1);
+  23   2         BEEP=!BEEP;       //BEEP取反
+  24   2         } 
+  25   1         BEEP=1;           //关闭蜂鸣器
+  26   1         Delay(250);       //延时     
+  27   1      }
+  28          void main()
+  29          {
+  30   1         FZ=1;
+  31   1         ZZ=1;
+  32   1       while(1){
+  33   2              if (!Key_UP)
+  34   2          KeyV = 1;
+  35   2        if (!Key_DOWN)
+  36   2          KeyV = 2;
+  37   2                  if (!Key_STOP)
+  38   2          KeyV = 3;
+  39   2         if (KeyV!= 0)     
+  40   2          {
+  41   3            Delay(10);   
+  42   3            if (!Key_UP)
+  43   3              TempKeyV = 1;   
+  44   3            if (!Key_DOWN)
+  45   3              TempKeyV = 2;   
+  46   3            if (!Key_STOP)
+  47   3              TempKeyV = 3;
+  48   3                       if (KeyV == TempKeyV)  
+  49   3                 {
+  50   4                       
+  51   4                         if (KeyV == 1){
+  52   5                          beep();
+  53   5                      ZZ=1;
+  54   5                      FZ=0;
+  55   5      }
+C51 COMPILER V8.02   DCMTRTEST                                                             07/21/2009 18:14:43 PAGE 2   
+
+  56   4      if(KeyV==2){
+  57   5       beep();
+  58   5                      ZZ=0;
+  59   5                      FZ=1;
+  60   5              }
+  61   4              if(KeyV==3){
+  62   5               beep();
+  63   5                      ZZ=0;
+  64   5                      FZ=0;
+  65   5              }                                       
+  66   4              }  
+  67   3      } 
+  68   2      KeyV=0;
+  69   2      TempKeyV=0; 
+  70   2       }
+  71   1      }
+  72          
+  73          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    155    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

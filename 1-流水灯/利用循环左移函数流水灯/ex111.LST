@@ -1,0 +1,52 @@
+C51 COMPILER V8.02   EX111                                                                 06/25/2009 00:45:20 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE EX111
+OBJECT MODULE PLACED IN ex111.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ex111.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          
+   2          
+   3          #include<reg51.h>
+   4          #include <intrins.h>
+   5          
+   6          
+   7          void delayms(unsigned char ms)  
+   8          // 延时子程序
+   9          {                                               
+  10   1              unsigned char i;
+  11   1              while(ms--)
+  12   1              {
+  13   2                      for(i = 0; i < 120; i++);
+  14   2              }
+  15   1      }
+  16          
+  17          main()
+  18          {
+  19   1              unsigned char LED;
+  20   1      LED = 0xfe;
+  21   1              P0 = LED;
+  22   1              
+  23   1              while(1)
+  24   1              {
+  25   2                      delayms(250);                   
+  26   2                      LED = _crol_(LED,1);            //循环左移1位，点亮下一个LED
+  27   2                      P0 = LED;
+  28   2              }
+  29   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     43    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

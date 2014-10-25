@@ -1,0 +1,4 @@
+"STARTUP.obj",
+"main.obj" 
+TO "mouse" 
+RAMSIZE(256) 

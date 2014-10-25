@@ -1,0 +1,78 @@
+C51 COMPILER V8.02   EX20                                                                  06/24/2009 13:57:06 PAGE 1   
+
+
+C51 COMPILER V8.02, COMPILATION OF MODULE EX20
+OBJECT MODULE PLACED IN ex20.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE ex20.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          //实例20：用swtich语句的控制P0口8位LED的点亮状态
+   2          #include<reg51.h>  //包含单片机寄存器的头文件
+   3          sbit K5=P1^4;     //将K5位定义为P1.4
+   4          /*****************************
+   5          函数功能：延时一段时间
+   6          *****************************/
+   7          void delay(void)
+   8          {
+   9   1       unsigned int n;
+  10   1       for(n=0;n<20000;n++)
+  11   1              ;
+  12   1      }
+  13          /*****************************
+  14          函数功能：主函数
+  15          *****************************/
+  16          void main(void)
+  17          {  
+  18   1         unsigned char i;
+  19   1              i=0;    //将i初始化为0
+  20   1              while(1)
+  21   1               {
+  22   2                        if(K5==0)     //如果S1键按下
+  23   2                         {
+  24   3                                delay();  //延时一段时间
+  25   3                                if(K5==0) //如果再次检测到S1键按下
+  26   3                                  i++;    //i自增1
+  27   3                                if(i==9)  //如果i=9，重新将其置为1
+  28   3                                  i=1;
+  29   3                                      
+  30   3                         }
+  31   2                       switch(i)   //使用多分支选择语句
+  32   2                                       {
+  33   3                                         case 1: P0=0xfe;  //第一个LED亮
+  34   3                                                              break;
+  35   3                                              case 2: P0=0xfd;  //第二个LED亮
+  36   3                                                    break;
+  37   3                                              case 3:P0=0xfb;   //第三个LED亮
+  38   3                                                    break;
+  39   3                                              case 4:P0=0xf7;   //第四个LED亮
+  40   3                                                    break;
+  41   3                                              case 5:P0=0xef;   //第五个LED亮
+  42   3                                                    break;
+  43   3                                              case 6:P0=0xdf;   //第六个LED亮
+  44   3                                                    break;
+  45   3                                              case 7:P0=0xbf;   //第七个LED亮
+  46   3                                               break;
+  47   3                                              case 8:P0=0x7f;   //第八个LED亮
+  48   3                                                    break;
+  49   3                                              default:   //缺省值，关闭所有LED
+  50   3                                                    P0=0xff;
+  51   3                                       }
+  52   2                       }        
+  53   1      }
+
+
+C51 COMPILER V8.02   EX20                                                                  06/24/2009 13:57:06 PAGE 2   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    122    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
